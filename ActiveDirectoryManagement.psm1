@@ -258,7 +258,7 @@ Function Get-LocalGroupMember {
         Return $Members
     }
 }
-Function Get-ADGroupMembers {
+Function Get-AdGroupMember {
     <#
         .SYNOPSIS
             Return a collection of users in an ActiveDirectory group.
@@ -270,7 +270,7 @@ Function Get-ADGroupMembers {
         .PARAMETER ADSPath
             The LDAP URL of the domain that the group resides in.
         .EXAMPLE
-            Get-ADGroupMembers -UserGroup Managers |Format-Table -Property name, distinguishedName, cn
+            Get-AdGroupMember -UserGroup Managers |Format-Table -Property name, distinguishedName, cn
 
             name                             distinguishedName                cn
             ----                             -----------------                --
@@ -285,7 +285,7 @@ Function Get-ADGroupMembers {
         .NOTES
             The context under which this script is run must have rights to pull infromation from ActiveDirectory.
         .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-ADGroupMembers
+            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdGroupMember
     #>
     [CmdletBinding()]
     Param
