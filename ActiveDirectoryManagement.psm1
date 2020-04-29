@@ -1016,7 +1016,7 @@ Function Add-UserToGroup {
         Return $GroupUpdated
     }
 }
-Function Set-ADObjectProperties {
+Function Set-AdObjectProperty {
     <#
         .SYNOPSIS
             Set the properties of a given object in AD
@@ -1033,17 +1033,17 @@ Function Set-ADObjectProperties {
             The PropertyName should always be listed first, followed by the
             values of the property.
         .EXAMPLE
-            Set-ADObjectProperties -ADObject 'LDAP://CN=UserAccount,CN=Users,DC=company,DC=com' -PropertyPairs "Description,New User Account"
+            Set-AdObjectProperty -ADObject 'LDAP://CN=UserAccount,CN=Users,DC=company,DC=com' -PropertyPairs "Description,New User Account"
 
             Description
             -----------
             This is the basic syntax of this function.
         .NOTES
-            FunctionName : Set-ADObjectProperties
+            FunctionName : Set-AdObjectProperty
             Created by   : Jeff Patton
             Date Coded   : 09/23/2011 14:27:19
         .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-ADObjectProperties
+            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AdObjectProperty
     #>
     [CmdletBinding()]
     Param
