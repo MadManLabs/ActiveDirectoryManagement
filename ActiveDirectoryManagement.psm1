@@ -764,7 +764,7 @@ Function Set-ComputerName {
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-ComputerName
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
         [string]$NewName,
@@ -799,13 +799,15 @@ Function Set-ComputerName {
     }
     Process {
         try {
-            if ($ComputerName -eq (hostname)) {
-                Write-Verbose "Renaming $($ComputerName) to $($NewName)"
-                $RetVal = $ThisComputer.Rename($NewName)
-            }
-            else {
-                Write-Verbose "Renaming remote $($ComputerName) to $($NewName) requires credentials."
-                $RetVal = $ThisComputer.Rename($NewName, $Credentials.GetNetworkCredential().Password, $Credentials.UserName)
+            if ($PSCmdlet.ShouldProcess()) {
+                if ($ComputerName -eq (hostname)) {
+                    Write-Verbose "Renaming $($ComputerName) to $($NewName)"
+                    $RetVal = $ThisComputer.Rename($NewName)
+                }
+                else {
+                    Write-Verbose "Renaming remote $($ComputerName) to $($NewName) requires credentials."
+                    $RetVal = $ThisComputer.Rename($NewName, $Credentials.GetNetworkCredential().Password, $Credentials.UserName)
+                }
             }
         }
         catch {
