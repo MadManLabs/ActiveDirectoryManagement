@@ -234,7 +234,7 @@ Function Get-LocalGroupMember {
             $Group = [ADSI]("WinNT://$($ComputerName)/$($GroupName),group")
 
             $Members = @()
-            $Group.Members() | foreach `
+            $Group.Members() | ForEach-Object `
             {
                 $AdsPath = $_.GetType().InvokeMember("Adspath", 'GetProperty', $null, $_, $null)
                 $AccountArray = $AdsPath.split('/', [StringSplitOptions]::RemoveEmptyEntries)
