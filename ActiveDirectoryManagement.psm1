@@ -1049,7 +1049,7 @@ Function Set-AdObjectProperty {
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AdObjectProperty
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
         $ADObject,
@@ -1063,36 +1063,38 @@ Function Set-AdObjectProperty {
         $ADObject = New-Object DirectoryServices.DirectoryEntry $ADObject
     }
     Process {
-        Write-Verbose "Work through an array of 0 or more PropertyPairs."
-        foreach ($PropertyPair in $PropertyPairs) {
-            Write-Verbose "Split this PropertyPair on comma."
-            $PropertyPair = $PropertyPair.Split(",")
-            if ($PropertyPair.Count -eq 2) {
-                Write-Verbose "Assign PropertyName to PropertyPair[0]"
-                $PropertyName = $PropertyPair[0]
-                Write-Verbose "Assign PropertyValue to PropertyPair[1]"
-                $PropertyValue = $PropertyPair[1]
+        if ($PSCmdlet.ShouldProcess()) {
+            Write-Verbose "Work through an array of 0 or more PropertyPairs."
+            foreach ($PropertyPair in $PropertyPairs) {
+                Write-Verbose "Split this PropertyPair on comma."
+                $PropertyPair = $PropertyPair.Split(",")
+                if ($PropertyPair.Count -eq 2) {
+                    Write-Verbose "Assign PropertyName to PropertyPair[0]"
+                    $PropertyName = $PropertyPair[0]
+                    Write-Verbose "Assign PropertyValue to PropertyPair[1]"
+                    $PropertyValue = $PropertyPair[1]
 
-                Write-Verbose "Assign the property of the object, the value"
-                $ADObject.Put($PropertyName, $PropertyValue)
-            }
-            elseif ($PropertyPair.Count -gt 2) {
-                Write-Verbose "Multi-valued property detected"
-                Write-Verbose "Assign PropertyName to PropertyPair[0]"
-                $PropertyName = $PropertyPair[0]
-                Write-Verbose "Assign remaining values to PropertyValues"
-                $PropertyValues = $PropertyPair[1..(($PropertyPair.Count) - 1)]
+                    Write-Verbose "Assign the property of the object, the value"
+                    $ADObject.Put($PropertyName, $PropertyValue)
+                }
+                elseif ($PropertyPair.Count -gt 2) {
+                    Write-Verbose "Multi-valued property detected"
+                    Write-Verbose "Assign PropertyName to PropertyPair[0]"
+                    $PropertyName = $PropertyPair[0]
+                    Write-Verbose "Assign remaining values to PropertyValues"
+                    $PropertyValues = $PropertyPair[1..(($PropertyPair.Count) - 1)]
 
-                Write-Verbose "Assign the property of the object, the values"
-                $ADObject.PutEx(2, $PropertyName, $PropertyValues)
-            }
-            Write-Verbose "Save property changes to object"
-            try {
-                $ADObject.SetInfo()
-                $ADObject.RefreshCache()
-            }
-            catch {
-                Return $Error[0]
+                    Write-Verbose "Assign the property of the object, the values"
+                    $ADObject.PutEx(2, $PropertyName, $PropertyValues)
+                }
+                Write-Verbose "Save property changes to object"
+                try {
+                    $ADObject.SetInfo()
+                    $ADObject.RefreshCache()
+                }
+                catch {
+                    Return $Error[0]
+                }
             }
         }
     }
