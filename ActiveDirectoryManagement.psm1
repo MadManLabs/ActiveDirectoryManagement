@@ -195,7 +195,7 @@ Function Add-UserToLocalGroup {
     End {
     }
 }
-Function Get-LocalGroupMembers {
+Function Get-LocalGroupMember {
     <#
         .SYNOPSIS
             Return a list of user accounts that are in a specified group.
@@ -209,14 +209,14 @@ Function Get-LocalGroupMembers {
             The name of the group to search in.
         .NOTES
         .EXAMPLE
-            Get-LocalGroupMembers -ComputerName mypc -GroupName Administrators
+            Get-LocalGroupMember -ComputerName mypc -GroupName Administrators
 
             Name                              Domain                          Class
             ----                              ------                          -----
             Administrator                     mypc                            User
             My Account                        mypc                            User
         .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-LocalGroupMembers
+            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-LocalGroupMember
     #>
     [CmdletBinding()]
     Param
