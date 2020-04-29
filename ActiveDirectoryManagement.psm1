@@ -1753,11 +1753,11 @@ Function ConvertTo-Rfc1779 {
         if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
         if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to domain'
+            Write-Output 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
         }
         if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to dc'
+            Write-Output 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
         }
@@ -1818,11 +1818,11 @@ Function ConvertTo-Canonical {
         if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
         if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to domain'
+            Write-Output 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
         }
         if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to dc'
+            Write-Output 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
         }
@@ -1883,11 +1883,11 @@ Function ConvertTo-Nt4 {
         if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
         if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to domain'
+            Write-Output 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
         }
         if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to dc'
+            Write-Output 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
         }
@@ -1948,11 +1948,11 @@ Function ConvertTo-Upn {
         if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
         if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to domain'
+            Write-Output 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
         }
         if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to dc'
+            Write-Output 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
         }
@@ -2013,11 +2013,11 @@ Function ConvertTo-Guid {
         if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
         if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to domain'
+            Write-Output 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
         }
         if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to dc'
+            Write-Output 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
         }
@@ -2078,11 +2078,11 @@ Function ConvertTo-Display {
         if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
         if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to domain'
+            Write-Output 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
         }
         if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
-            Write-Host 'setting connectionobject to dc'
+            Write-Output 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
         }
