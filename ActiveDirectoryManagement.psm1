@@ -289,6 +289,7 @@ Function Get-AdGroupMember {
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdGroupMember
     #>
     [CmdletBinding()]
+    [OutputType([object[]])]
     Param
     (
         [string]$UserGroup = "Managers",
