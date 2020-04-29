@@ -2155,6 +2155,7 @@ Function Get-GpoLink {
             $GpoLink = $DirectorySearcher.FindAll()
         }
         catch {
+            throw $_
         }
 
     }
