@@ -219,6 +219,7 @@ Function Get-LocalGroupMember {
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-LocalGroupMember
     #>
     [CmdletBinding()]
+    [OutputType([object[]])]
     Param
     (
         [Parameter(Mandatory = $true)]
