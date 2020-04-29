@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2020-04-29
 ### Removed
-- Got rid of the old CS code
+- Got rid of the old CS code 6f21ee204bd2c764401bd878eeab13656667df4c
 
 ### Added
 - Copied over the original ActiveDirectoryManagement.psm1
