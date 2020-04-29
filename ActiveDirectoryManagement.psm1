@@ -2319,7 +2319,7 @@ Function Set-NetlogonDebugging {
         .LINK
             http://support.microsoft.com/kb/109626
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Low')]
     Param
     (
         [switch]$Enable
@@ -2328,15 +2328,17 @@ Function Set-NetlogonDebugging {
     }
     Process {
         try {
-            if ($Enable) {
-                Write-Verbose "Running : nltest /dbflag:0x2080ffff"
-                (& nltest /dbflag:0x2080ffff)
-                Restart-Service -Name netlogon -Force
-            }
-            else {
-                Write-Verbose "Running : nltest /dbflag:0x0"
-                (& nltest /dbflag:0x0)
-                Restart-Service -Name netlogon -Force
+            if ($PSCmdlet.ShouldProcess()) {
+                if ($Enable) {
+                    Write-Verbose "Running : nltest /dbflag:0x2080ffff"
+                    (& nltest /dbflag:0x2080ffff)
+                    Restart-Service -Name netlogon -Force
+                }
+                else {
+                    Write-Verbose "Running : nltest /dbflag:0x0"
+                    (& nltest /dbflag:0x0)
+                    Restart-Service -Name netlogon -Force
+                }
             }
         }
         catch {
