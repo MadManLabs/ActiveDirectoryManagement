@@ -1151,7 +1151,6 @@ Function Rename-Adobject {
             $ErrorActionPreference = "Stop"
             $sAMAccountName = $Adobject.sAMAccountName.ToString()
             $userPrincipalName = $Adobject.userPrincipalName.ToString()
-            $path = $Adobject.Path.ToString()
             $Adobject.Rename("cn=$($Name)")
             $Adobject.Put("sAMAccountName", $Name)
             $Adobject.SetInfo()
