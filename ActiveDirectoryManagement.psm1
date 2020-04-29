@@ -498,7 +498,7 @@ Function Reset-ComputerAccount {
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Reset-ComputerAccount
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
         [Parameter(Mandatory = $true)]
@@ -509,11 +509,13 @@ Function Reset-ComputerAccount {
     }
     Process {
         Try {
-            $Computer.SetPassword($($Computer.name) + "$")
-            if ($? -eq $true) {
-                $Result = New-Object -TypeName PSObject -Property @{
-                    Computer = $Computer
-                    Success  = $?
+            if ($PSCmdlet.ShouldProcess()) {
+                $Computer.SetPassword($($Computer.name) + "$")
+                if ($? -eq $true) {
+                    $Result = New-Object -TypeName PSObject -Property @{
+                        Computer = $Computer
+                        Success  = $?
+                    }
                 }
             }
         }
