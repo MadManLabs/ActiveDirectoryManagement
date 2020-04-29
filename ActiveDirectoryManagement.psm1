@@ -446,7 +446,7 @@ Function Set-AccountDisabled {
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AccountDisabled
     #>
-    [CmdletBinding()]
+    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
         [Parameter(Mandatory = $true)]
@@ -457,12 +457,14 @@ Function Set-AccountDisabled {
     }
     Process {
         Try {
-            $DisableComputer.psbase.invokeset("AccountDisabled", "True")
-            $DisableComputer.psbase.CommitChanges()
-            if ($? -eq $true) {
-                $Result = New-Object -TypeName PSObject -Property @{
-                    DisabledComputer = $DisabledComputer
-                    Success          = $?
+            if ($PSCmdlet.ShouldProcess()) {
+                $DisableComputer.psbase.invokeset("AccountDisabled", "True")
+                $DisableComputer.psbase.CommitChanges()
+                if ($? -eq $true) {
+                    $Result = New-Object -TypeName PSObject -Property @{
+                        DisabledComputer = $DisabledComputer
+                        Success          = $?
+                    }
                 }
             }
         }
