@@ -2430,5 +2430,3 @@ Function Enable-OUProtectedMode {
         }
     }
 }
-
-Export-ModuleMember *
