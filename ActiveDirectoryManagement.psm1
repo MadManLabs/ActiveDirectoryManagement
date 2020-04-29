@@ -344,7 +344,7 @@ Function Get-AdGroupMember {
         Return $UserAccounts
     }
 }
-Function Get-StaleComputerAccounts {
+Function Get-StaleComputerAccount {
     <#
         .SYNOPSIS
             Return a collection of computer accounts older than a set number of days.
@@ -358,7 +358,7 @@ Function Get-StaleComputerAccounts {
         .PARAMETER DayOffset
             Am integer that represents the number of days in which an account is considered stale.
         .EXAMPLE
-            Get-StaleComputerAccounts -ADSPath "LDAP://DC=company,DC=com" -DayOffset 90
+            Get-StaleComputerAccount -ADSPath "LDAP://DC=company,DC=com" -DayOffset 90
 
             name                             adspath                          whenchanged
             ----                             -------                          -----------
@@ -378,7 +378,7 @@ Function Get-StaleComputerAccounts {
             hierarchy. I treat server accounts slightly differently than I do workstations accounts, so I
             wanted a way to differentiate the two.
         .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-StaleComputerAccounts
+            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-StaleComputerAccount
     #>
     [CmdletBinding()]
     Param
