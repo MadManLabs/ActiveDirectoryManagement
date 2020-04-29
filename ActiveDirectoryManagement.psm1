@@ -1,46 +1,45 @@
-Function Get-ADObjects
-{
+Function Get-AdObject {
     <#
         .SYNOPSIS
             Returns a list of objects from ActiveDirectory
         .DESCRIPTION
-            This function will return a list of objects from ActiveDirectory. It will start at the provided ADSPath 
-            and find each object that matches the provided SearchFilter. For each object returned only the 
+            This function will return a list of objects from ActiveDirectory. It will start at the provided ADSPath
+            and find each object that matches the provided SearchFilter. For each object returned only the
             specified properties will be provided.
         .PARAMETER ADSPath
-            This is the LDAP URI of the location within ActiveDirectory you would like to search. This can be an 
+            This is the LDAP URI of the location within ActiveDirectory you would like to search. This can be an
             OU, CN or even the root of your domain.
         .PARAMETER SearchFilter
-            This parameter is specified in the same format as an LDAP Search Filter. For more information on the 
-            format please visit Microsoft (http://msdn.microsoft.com/en-us/library/aa746475.aspx). If nothing is 
+            This parameter is specified in the same format as an LDAP Search Filter. For more information on the
+            format please visit Microsoft (http://msdn.microsoft.com/en-us/library/aa746475.aspx). If nothing is
             specified on the command-line the default filter is used:
                 (objectCategory=computer)
         .PARAMETER ADProperties
-            If you want specific properties returned like name, or distinguishedName 
+            If you want specific properties returned like name, or distinguishedName
             provide a comma seperated list.
         .EXAMPLE
-            Get-ADObjects -ADSPath "LDAP://OU=Workstations,DC=company,DC=com"
+            Get-AdObject -ADSPath "LDAP://OU=Workstations,DC=company,DC=com"
 
-            Path                                                                  Properties                                                                           
-            ----                                                                  ----------                                                                           
-            LDAP://CN=Computer-pc01,OU=Workstations,DC=company,DC=com             {name, adspath}                                                                      
-            LDAP://CN=Computer-pc02,OU=Workstations,DC=company,DC=com             {name, adspath}                                                                      
-            LDAP://CN=Computer-pc03,OU=Workstations,DC=company,DC=com             {name, adspath}                                                                      
+            Path                                                                  Properties
+            ----                                                                  ----------
+            LDAP://CN=Computer-pc01,OU=Workstations,DC=company,DC=com             {name, adspath}
+            LDAP://CN=Computer-pc02,OU=Workstations,DC=company,DC=com             {name, adspath}
+            LDAP://CN=Computer-pc03,OU=Workstations,DC=company,DC=com             {name, adspath}
             LDAP://CN=Computer-pc04,OU=Workstations,DC=company,DC=com             {name, adspath}
-            
+
             Description
             -----------
             When specifying just the ADSPath computer objects and their associated name properties are returned
             by default.
         .EXAMPLE
-            Get-ADObjects -ADSPath "LDAP://OU=Workstations,DC=company,DC=com" `
+            Get-AdObject -ADSPath "LDAP://OU=Workstations,DC=company,DC=com" `
             -ADProperties "name","distinguishedName"
 
-            Path                                                                  Properties                                                                           
-            ----                                                                  ----------                                                                           
-            LDAP://CN=Computer-pc01,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}                                                   
-            LDAP://CN=Computer-pc02,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}                                                   
-            LDAP://CN=Computer-pc03,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}                                                   
+            Path                                                                  Properties
+            ----                                                                  ----------
+            LDAP://CN=Computer-pc01,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}
+            LDAP://CN=Computer-pc02,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}
+            LDAP://CN=Computer-pc03,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}
             LDAP://CN=Computer-pc04,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}
 
             Description
@@ -48,90 +47,78 @@ Function Get-ADObjects
             This example shows the format for ADProperties, each property is composed of a string enclosed in quotes
             seperated by commas.
         .EXAMPLE
-            Get-ADObjects -ADSPath "LDAP://OU=Groups,DC=company,DC=com" `
+            Get-AdObject -ADSPath "LDAP://OU=Groups,DC=company,DC=com" `
             -ADProperties "name","distinguishedName" -SearchFilter group
 
-            Path                                                                  Properties                                                                           
-            ----                                                                  ----------                                                                           
-            LDAP://CN=Group-01,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}                                                   
-            LDAP://CN=Group-02,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}                                                   
-            LDAP://CN=Group-03,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}                                                   
+            Path                                                                  Properties
+            ----                                                                  ----------
+            LDAP://CN=Group-01,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}
+            LDAP://CN=Group-02,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}
+            LDAP://CN=Group-03,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}
             LDAP://CN=Group-04,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}
-            
+
             Description
             -----------
-            This example shows multiple properties as well as setting the SearchFilter to be groups that are 
+            This example shows multiple properties as well as setting the SearchFilter to be groups that are
             returned.
         .NOTES
             The script runs under the users context, so the user account must have permissions
             to view the objects within the domain that the function is currently running
             against.
         .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-ADObjects
+            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdObject
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$ADSPath = (([ADSI]"").distinguishedName),
         [string]$SearchFilter = "(objectCategory=computer)",
-        [ValidateSet("Base","OneLevel","Subtree")]
+        [ValidateSet("Base", "OneLevel", "Subtree")]
         [string]$SearchScope = "Subtree",
         [array]$ADProperties,
         [bool]$CacheResults = $False,
         [bool]$Tombstone = $false,
         [System.Management.Automation.PSCredential]$Credential,
         $DirSync
-        )
-    Begin
-    {
-        if ($ADSPath -notmatch "LDAP://*")
-        {
+    )
+    Begin {
+        if ($ADSPath -notmatch "LDAP://*") {
             $ADSPath = "LDAP://$($ADSPath)"
-            }
         }
-    Process
-    {
-        Try
-        {
-            if ($Credential)
-            {
+    }
+    Process {
+        Try {
+            if ($Credential) {
                 $DirectoryEntry = New-Object System.DirectoryServices.DirectoryEntry($ADSPath, $Credential.UserName, $Credential.Password)
-                }
-            else
-            {
+            }
+            else {
                 $DirectoryEntry = New-Object System.DirectoryServices.DirectoryEntry($ADSPath)
-                }
-            if ($ADProperties)
-            {
+            }
+            if ($ADProperties) {
                 $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher $DirectoryEntry, $SearchFilter, $AdProperties
-                }
-            else
-            {
+            }
+            else {
                 $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher
                 $DirectorySearcher.SearchRoot = $DirectoryEntry
                 $DirectorySearcher.PageSize = 1000
                 $DirectorySearcher.Filter = $SearchFilter
-                }
+            }
             $DirectorySearcher.SearchScope = $SearchScope
             $DirectorySearcher.CacheResults = $CacheResults
             $DirectorySearcher.Tombstone = $TombStone
-            if ($DirSync)
-            {
+            if ($DirSync) {
                 $DirectorySearcher.DirectorySynchronization = New-Object System.DirectoryServices.DirectorySynchronization $DirSync
-                }
+            }
             $DirectorySearcher.FindAll()
-            }
-        Catch
-        {
+        }
+        Catch {
             Return $Error[0].Exception
-            }
         }
-    End
-    {
-        }
-    }    
-Function Add-UserToLocalGroup
-{
+    }
+    End {
+    }
+}
+Function Add-UserToLocalGroup {
     <#
         .SYNOPSIS
             Add a domain user to a local group.
@@ -166,58 +153,49 @@ Function Add-UserToLocalGroup
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(ValueFromPipeline=$True,ValueFromPipelinebyPropertyName=$True)]
+    (
+        [Parameter(ValueFromPipeline = $True, ValueFromPipelinebyPropertyName = $True)]
         [string]$ComputerName,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$UserName,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$LocalGroup,
         [string]$UserDomain = $null
-        )
-    Begin
-    {
-        if (!($UserDomain))
-        {
+    )
+    Begin {
+        if (!($UserDomain)) {
             $UserDomain = [string]([ADSI]"").name
-            }
-        }        
-    Process
-    {
-        foreach ($Computer in $ComputerName)
-        {
-            Try
-            {
-                ([ADSI]"WinNT://$Computer/$LocalGroup,group").Add("WinNT://$UserDomain/$UserName")
-                if ($? -eq $true)
-                {
-                    New-Object -TypeName PSObject -Property @{
-                        Computer = $Computer
-                        Group = $LocalGroup
-                        Domain = $UserDomain
-                        User = $UserName
-                        Success = $?
-                        }
-                    }
-                }
-            Catch
-            {
-                New-Object -TypeName PSObject -Property @{
-                    Computer = $Computer
-                    Group = $LocalGroup
-                    Domain = $UserDomain
-                    User = $UserName
-                    Success = $Error[0].Exception.InnerException.Message.ToString().Trim()
-                    }
-                }
-            }
-        }
-    End
-    {
         }
     }
-Function Get-LocalGroupMembers
-{
+    Process {
+        foreach ($Computer in $ComputerName) {
+            Try {
+                ([ADSI]"WinNT://$Computer/$LocalGroup,group").Add("WinNT://$UserDomain/$UserName")
+                if ($? -eq $true) {
+                    New-Object -TypeName PSObject -Property @{
+                        Computer = $Computer
+                        Group    = $LocalGroup
+                        Domain   = $UserDomain
+                        User     = $UserName
+                        Success  = $?
+                    }
+                }
+            }
+            Catch {
+                New-Object -TypeName PSObject -Property @{
+                    Computer = $Computer
+                    Group    = $LocalGroup
+                    Domain   = $UserDomain
+                    User     = $UserName
+                    Success  = $Error[0].Exception.InnerException.Message.ToString().Trim()
+                }
+            }
+        }
+    }
+    End {
+    }
+}
+Function Get-LocalGroupMembers {
     <#
         .SYNOPSIS
             Return a list of user accounts that are in a specified group.
@@ -240,53 +218,47 @@ Function Get-LocalGroupMembers
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-LocalGroupMembers
     #>
-    [CmdletBinding()]        
+    [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$ComputerName,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$GroupName
-        )
-    Begin
-    {
-        }
-    Process
-    {
-        Try
-        {
+    )
+    Begin {
+    }
+    Process {
+        Try {
             $Group = [ADSI]("WinNT://$($ComputerName)/$($GroupName),group")
 
-            $Members = @()  
-            $Group.Members() |foreach `
+            $Members = @()
+            $Group.Members() | foreach `
             {
                 $AdsPath = $_.GetType().InvokeMember("Adspath", 'GetProperty', $null, $_, $null)
-                $AccountArray = $AdsPath.split('/',[StringSplitOptions]::RemoveEmptyEntries)
+                $AccountArray = $AdsPath.split('/', [StringSplitOptions]::RemoveEmptyEntries)
                 [string]$AccountName = $AccountArray[-1]
                 [string]$AccountDomain = $AccountArray[-2]
                 [string]$AccountClass = $_.GetType().InvokeMember("Class", 'GetProperty', $null, $_, $null)
-                        
-                $Member = New-Object PSObject -Property @{
-                    Name = $AccountName
-                    Domain = $AccountDomain
-                    Class = $AccountClass
-                    }
 
-                $Members += $Member  
+                $Member = New-Object PSObject -Property @{
+                    Name   = $AccountName
+                    Domain = $AccountDomain
+                    Class  = $AccountClass
                 }
-            }
-        Catch
-        {
-            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
+
+                $Members += $Member
             }
         }
-    End
-    {
-        Return $Members
+        Catch {
+            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
         }
     }
-Function Get-ADGroupMembers
-{
+    End {
+        Return $Members
+    }
+}
+Function Get-ADGroupMembers {
     <#
         .SYNOPSIS
             Return a collection of users in an ActiveDirectory group.
@@ -300,12 +272,12 @@ Function Get-ADGroupMembers
         .EXAMPLE
             Get-ADGroupMembers -UserGroup Managers |Format-Table -Property name, distinguishedName, cn
 
-            name                             distinguishedName                cn                              
-            ----                             -----------------                --                              
-            {Steve Roberts}                  {CN=Steve Roberts,CN=Users,DC... {Steve Roberts}                 
+            name                             distinguishedName                cn
+            ----                             -----------------                --
+            {Steve Roberts}                  {CN=Steve Roberts,CN=Users,DC... {Steve Roberts}
             {S-1-5-21-57989841-1078081533... {CN=S-1-5-21-57989841-1078081... {S-1-5-21-57989841-1078081533...
             {S-1-5-21-57989841-1078081533... {CN=S-1-5-21-57989841-1078081... {S-1-5-21-57989841-1078081533...
-            {Matt Temple}                    {CN=Matt Temple,CN=Users,DC=c... {Matt Temple}                   
+            {Matt Temple}                    {CN=Matt Temple,CN=Users,DC=c... {Matt Temple}
             ...
             Description
             -----------
@@ -317,16 +289,14 @@ Function Get-ADGroupMembers
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$UserGroup = "Managers",
         [string]$ADSPath = (([ADSI]"").distinguishedName)
-        )
-    Begin
-    {
-        if ($ADSPath -notmatch "LDAP://*")
-        {
+    )
+    Begin {
+        if ($ADSPath -notmatch "LDAP://*") {
             $ADSPath = "LDAP://$($ADSPath)"
-            }
+        }
 
         $DirectoryEntry = New-Object System.DirectoryServices.DirectoryEntry($ADSPath)
         $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher
@@ -339,57 +309,49 @@ Function Get-ADGroupMembers
         $DirectorySearcher.SearchScope = "Subtree"
 
         $SearchResult = $DirectorySearcher.FindAll()
-            
+
         $UserAccounts = @()
-        }
-    Process
-    {
-        foreach ($Item in $SearchResult)
-        {
+    }
+    Process {
+        foreach ($Item in $SearchResult) {
             $Group = $Item.GetDirectoryEntry()
             $Members = $Group.member
-                
-            If ($Members -ne $Null)
-            {
-                foreach ($User in $Members)
-                {
+
+            If ($Members -ne $Null) {
+                foreach ($User in $Members) {
                     $UserObject = New-Object System.DirectoryServices.DirectoryEntry("LDAP://$($User)")
-                    If ($UserObject.objectCategory.Value.Contains("Group"))
-                    {
-                        }
-                    Else
-                    {
-                        $ThisUser = New-Object -TypeName PSObject -Property @{
-                            cn = [string]$UserObject.cn
-                            distinguishedName = [string]$UserObject.distinguishedName
-                            name = [string]$UserObject.name
-                            nTSecurityDescriptor = $UserObject.nTSecurityDescriptor
-                            objectCategory = [string]$UserObject.objectCategory
-                            objectClass = $UserObject.objectClass
-                            objectGUID = $UserObject.objectGUID
-                            objectSID = $UserObject.objectSID
-                            showInAdvancedViewOnly = $UserObject.showInAdvancedViewOnly
-                            }
-                        }
-                    $UserAccounts += $ThisUser
+                    If ($UserObject.objectCategory.Value.Contains("Group")) {
                     }
+                    Else {
+                        $ThisUser = New-Object -TypeName PSObject -Property @{
+                            cn                     = [string]$UserObject.cn
+                            distinguishedName      = [string]$UserObject.distinguishedName
+                            name                   = [string]$UserObject.name
+                            nTSecurityDescriptor   = $UserObject.nTSecurityDescriptor
+                            objectCategory         = [string]$UserObject.objectCategory
+                            objectClass            = $UserObject.objectClass
+                            objectGUID             = $UserObject.objectGUID
+                            objectSID              = $UserObject.objectSID
+                            showInAdvancedViewOnly = $UserObject.showInAdvancedViewOnly
+                        }
+                    }
+                    $UserAccounts += $ThisUser
                 }
             }
         }
-    End
-    {
-        Return $UserAccounts
-        }
     }
-Function Get-StaleComputerAccounts
-{
+    End {
+        Return $UserAccounts
+    }
+}
+Function Get-StaleComputerAccounts {
     <#
         .SYNOPSIS
             Return a collection of computer accounts older than a set number of days.
         .DESCRIPTION
             This function can be used to get a list of computer accounts within your Active Directory
             that are older than a certain number of days. Typically a computer account will renew it's
-            own password every 90 days, so any account where the 'whenChanged' attribute is older than 
+            own password every 90 days, so any account where the 'whenChanged' attribute is older than
             90 would be considered old.
         .PARAMETER ADSPath
             This is an LDAP url that will become the base of your search.
@@ -412,28 +374,26 @@ Function Get-StaleComputerAccounts
             90 is a default value, when run in production you should use the number of days that you
             consider an account to be stale.
             The If statement that checks if adsPath contains OU=Servers is specifically for our production
-            environment. All "servers", regardless of OS, are placed in the Servers OU in their respective 
-            hierarchy. I treat server accounts slightly differently than I do workstations accounts, so I 
+            environment. All "servers", regardless of OS, are placed in the Servers OU in their respective
+            hierarchy. I treat server accounts slightly differently than I do workstations accounts, so I
             wanted a way to differentiate the two.
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-StaleComputerAccounts
     #>
-    [CmdletBinding()]    
+    [CmdletBinding()]
     Param
-        (
+    (
         [string]$ADSPath = (([ADSI]"").distinguishedName),
         [int]$DayOffset = 90
-        )
-    Begin
-    {
-        if ($ADSPath -notmatch "LDAP://*")
-        {
+    )
+    Begin {
+        if ($ADSPath -notmatch "LDAP://*") {
             $ADSPath = "LDAP://$($ADSPath)"
-            }
-            
+        }
+
         $DateOffset = (Get-Date).AddDays(-$DayOffset)
         [string]$SearchFilter = "(objectCategory=computer)"
-        [array]$ADProperties= "name", "whenChanged", "whenCreated"
+        [array]$ADProperties = "name", "whenChanged", "whenCreated"
 
         $DirectoryEntry = New-Object System.DirectoryServices.DirectoryEntry($ADSPath)
         $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher
@@ -442,40 +402,34 @@ Function Get-StaleComputerAccounts
         $DirectorySearcher.Filter = $SearchFilter
         $DirectorySearcher.SearchScope = "Subtree"
 
-        foreach ($Property in $ADProperties)
-            {
-                [void]$DirectorySearcher.PropertiesToLoad.Add($Property)
-                }
+        foreach ($Property in $ADProperties) {
+            [void]$DirectorySearcher.PropertiesToLoad.Add($Property)
+        }
 
         $ADObjects = $DirectorySearcher.FindAll()
-        }
-    Process
-    {
+    }
+    Process {
         $StaleComputerAccounts = @()
 
-        foreach ($ADObject in $ADObjects)
-        {
+        foreach ($ADObject in $ADObjects) {
             $WhenChanged = $ADObject.Properties.whenchanged
             $WhenCreated = $ADObject.Properties.whencreated
-            if ($WhenChanged -lt $DateOffset -and $ADObject.Properties.adspath -notlike "*OU=Servers*")
-            {
+            if ($WhenChanged -lt $DateOffset -and $ADObject.Properties.adspath -notlike "*OU=Servers*") {
                 $ThisComputer = New-Object PSObject -Property @{
-                    name = [string]$ADObject.Properties.name
-                    adspath = [string]$ADObject.Properties.adspath
+                    name        = [string]$ADObject.Properties.name
+                    adspath     = [string]$ADObject.Properties.adspath
                     whenchanged = [string]$WhenChanged
                     whencreated = [string]$WhenCreated
-                    }
-                $StaleComputerAccounts += $ThisComputer
                 }
+                $StaleComputerAccounts += $ThisComputer
             }
-        }    
-    End
-    {
-        Return $StaleComputerAccounts
         }
     }
-Function Set-AccountDisabled
-{
+    End {
+        Return $StaleComputerAccounts
+    }
+}
+Function Set-AccountDisabled {
     <#
         .SYNOPSIS
             Disable an account object in Active Directory
@@ -487,50 +441,43 @@ Function Set-AccountDisabled
         .EXAMPLE
             Set-AccountDisabled -ADSPath "LDAP://CN=Desktop-01,OU=Workstations,DC=Company,DC=com"
         .NOTES
-            The context under which this function is run needs to have rights to modify the object in 
+            The context under which this function is run needs to have rights to modify the object in
             Active Directory. The error I catch is specifically an Access is Denied message.
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AccountDisabled
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$ADSPath
-        )
-    Begin
-    {
+    )
+    Begin {
         $DisableComputer = [ADSI]$ADSPath
-        }
-    Process
-    {
-        Try
-        {
-            $DisableComputer.psbase.invokeset("AccountDisabled","True")
+    }
+    Process {
+        Try {
+            $DisableComputer.psbase.invokeset("AccountDisabled", "True")
             $DisableComputer.psbase.CommitChanges()
-            if ($? -eq $true)
-            {
+            if ($? -eq $true) {
                 $Result = New-Object -TypeName PSObject -Property @{
                     DisabledComputer = $DisabledComputer
-                    Success = $?
-                    }
+                    Success          = $?
                 }
             }
-        Catch
-        {
+        }
+        Catch {
             $Result = New-Object -TypeName PSObject -Property @{
                 DisabledComputer = $DisabledComputer
-                Success = $Error[0].Exception.InnerException.Message.ToString().Trim()
-                }
+                Success          = $Error[0].Exception.InnerException.Message.ToString().Trim()
             }
         }
-    End
-    {
-        Return $Result
-        }
     }
-Function Reset-ComputerAccount
-{
+    End {
+        Return $Result
+    }
+}
+Function Reset-ComputerAccount {
     <#
         .SYNOPSIS
             Reset computer account password
@@ -541,7 +488,7 @@ Function Reset-ComputerAccount
             The ADSPath of the computer account, or containing OU.
         .EXAMPLE
             Reset-ComputerAccount -ADSPath "LDAP://CN=Desktop-PC01,OU=Workstations,DC=company,DC=com"
-            
+
             Description
             -----------
             Example usage showing single computer account reset.
@@ -551,42 +498,35 @@ Function Reset-ComputerAccount
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [String]$ADSPath
-        )
-    Begin
-    {
+    )
+    Begin {
         $Computer = [ADSI]$ADSPath
-        }
-    Process
-    {
-        Try
-        {
-            $Computer.SetPassword($($Computer.name)+"$")
-            if ($? -eq $true)
-            {
+    }
+    Process {
+        Try {
+            $Computer.SetPassword($($Computer.name) + "$")
+            if ($? -eq $true) {
                 $Result = New-Object -TypeName PSObject -Property @{
                     Computer = $Computer
-                    Success = $?
-                    }
+                    Success  = $?
                 }
             }
-        Catch
-        {
+        }
+        Catch {
             $Result = New-Object -TypeName PSObject -Property @{
                 Computer = $Computer
-                Success = $Error[0].Exception.InnerException.Message.ToString().Trim()
-                }
+                Success  = $Error[0].Exception.InnerException.Message.ToString().Trim()
             }
         }
-    End
-    {
-        Return $Result
-        }
     }
-Function Add-DomainGroupToLocalGroup
-{
+    End {
+        Return $Result
+    }
+}
+Function Add-DomainGroupToLocalGroup {
     <#
         .SYNOPSIS
             Add a Domain security group to a local computer group
@@ -602,7 +542,7 @@ Function Add-DomainGroupToLocalGroup
             The NetBIOS domain name.
         .EXAMPLE
             Add-DomainGroupToLocalGroup -ComputerName "Desktop-PC01" -DomainGroup "StudentAdmins" -UserDomain "COMPANY"
-            
+
             Description
             ===========
             Showing the default syntax to add a student admin group to a local computer account.
@@ -612,64 +552,57 @@ Function Add-DomainGroupToLocalGroup
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$ComputerName,
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [string]$DomainGroup,
-        [string]$LocalGroup="Administrators",
-        [string]$UserDomain    
-        )
-    Begin
-    {
+        [string]$LocalGroup = "Administrators",
+        [string]$UserDomain
+    )
+    Begin {
         $ComputerObject = [ADSI]("WinNT://$($ComputerName),computer")
-        }
-    Process
-    {
-        Try
-        {
+    }
+    Process {
+        Try {
             $GroupObject = $ComputerObject.PSBase.Children.Find("$($LocalGroup)")
             $GroupObject.Add("WinNT://$UserDomain/$DomainGroup")
-            if ($? -eq $true)
-            {
+            if ($? -eq $true) {
                 $Result = New-Object -TypeName PSobject -Property @{
-                    Computer = $ComputerName
+                    Computer    = $ComputerName
                     DomainGroup = $DomainGroup
-                    LocalGroup = $LocalGroup
-                    Domain = $UserDomain
-                    Result = $?
-                    }
-                }
-            }
-        Catch
-        {
-            $Result = New-Object -TypeName PSobject -Property @{
-                Computer = $ComputerName
-                DomainGroup = $DomainGroup
-                LocalGroup = $LocalGroup
-                Domain = $UserDomain
-                Result = $Error[0].Exception.InnerException.Message.ToString().Trim()
+                    LocalGroup  = $LocalGroup
+                    Domain      = $UserDomain
+                    Result      = $?
                 }
             }
         }
-    End
-    {
-        Return $Result
+        Catch {
+            $Result = New-Object -TypeName PSobject -Property @{
+                Computer    = $ComputerName
+                DomainGroup = $DomainGroup
+                LocalGroup  = $LocalGroup
+                Domain      = $UserDomain
+                Result      = $Error[0].Exception.InnerException.Message.ToString().Trim()
+            }
         }
     }
-Function Get-FSMORoleOwner 
-{
-    <#  
-        .SYNOPSIS  
-            Retrieves the list of FSMO role owners of a forest and domain  
-        .DESCRIPTION  
+    End {
+        Return $Result
+    }
+}
+Function Get-FSMORoleOwner {
+    <#
+        .SYNOPSIS
+            Retrieves the list of FSMO role owners of a forest and domain
+        .DESCRIPTION
             Retrieves the list of FSMO role owners of a forest and domain
         .PARMETER TargetDomain
             The FQDN of the domain to query on
-        .NOTES  
+        .NOTES
             Name: Get-FSMORoleOwner
             Author: Boe Prox
-            DateCreated: 06/9/2011  
+            DateCreated: 06/9/2011
         .EXAMPLE
             Get-FSMORoleOwner
 
@@ -689,45 +622,38 @@ Function Get-FSMORoleOwner
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$TargetDomain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
-        )
-    Begin
-    {
-        $ForestContext = New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext("Forest",$TargetDomain)
+    )
+    Begin {
+        $ForestContext = New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext("Forest", $TargetDomain)
         $Forest = [system.directoryservices.activedirectory.Forest]::GetForest($ForestContext)
-        }
-    Process
-    {
-        Try 
-        {
-            ForEach ($domain in $forest.domains) 
-            {
+    }
+    Process {
+        Try {
+            ForEach ($domain in $forest.domains) {
                 $forestproperties = @{
-                    Forest = $Forest.name
-                    Domain = $domain.name
-                    SchemaMaster = $forest.SchemaRoleOwner
-                    DomainNamingMaster = $forest.NamingRoleOwner
-                    RIDOwner = $Domain.RidRoleOwner
-                    PDCOwner = $Domain.PdcRoleOwner
+                    Forest              = $Forest.name
+                    Domain              = $domain.name
+                    SchemaMaster        = $forest.SchemaRoleOwner
+                    DomainNamingMaster  = $forest.NamingRoleOwner
+                    RIDOwner            = $Domain.RidRoleOwner
+                    PDCOwner            = $Domain.PdcRoleOwner
                     InfrastructureOwner = $Domain.InfrastructureRoleOwner
-                    }
-                $ForestObject = New-Object PSObject -Property $forestproperties
-                $ForestObject.PSTypeNames.Insert(0,"ForestRoles")
                 }
-            }
-        Catch 
-        {
-            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
+                $ForestObject = New-Object PSObject -Property $forestproperties
+                $ForestObject.PSTypeNames.Insert(0, "ForestRoles")
             }
         }
-    End
-    {
-        Return $ForestObject
+        Catch {
+            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
         }
     }
-Function Convert-FspToUsername
-{
+    End {
+        Return $ForestObject
+    }
+}
+Function Convert-FspToUsername {
     <#
         .SYNOPSIS
             Convert a FSP to a sAMAccountName
@@ -749,7 +675,7 @@ Function Convert-FspToUsername
             ===========
             This example shows passing in multipe sids to the function
         .EXAMPLE
-            Get-ADObjects -ADSPath "LDAP://CN=ForeignSecurityPrincipals,DC=company,DC=com" -SearchFilter "(objectClass=foreignSecurityPrincipal)" |
+            Get-AdObject -ADSPath "LDAP://CN=ForeignSecurityPrincipals,DC=company,DC=com" -SearchFilter "(objectClass=foreignSecurityPrincipal)" |
             foreach {$_.Properties.name} |Convert-FspToUsername
 
             sAMAccountName                      Sid
@@ -760,53 +686,46 @@ Function Convert-FspToUsername
 
             Description
             ===========
-            This example takes the output of the Get-ADObjects function, and pipes it through foreach to get to the name
+            This example takes the output of the Get-AdObject function, and pipes it through foreach to get to the name
             property, and the resulting output is piped through Convert-FspToUsername.
         .NOTES
             This function currently expects a SID in the same format as you see being displayed
             as the name property of each object in the ForeignSecurityPrincipals container in your
-            domain. 
+            domain.
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Convert-FspToUsername
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Position=0,Mandatory=$true,ValueFromPipeline=$true)]
+    (
+        [Parameter(Position = 0, Mandatory = $true, ValueFromPipeline = $true)]
         $UserSID
-        )
-    Begin
-    {
-        }
-    Process
-    {
-        foreach ($Sid in $UserSID)
-        {
-            try
-            {
+    )
+    Begin {
+    }
+    Process {
+        foreach ($Sid in $UserSID) {
+            try {
                 $SAM = (New-Object System.Security.Principal.SecurityIdentifier($Sid)).Translate([System.Security.Principal.NTAccount])
                 $Result = New-Object -TypeName PSObject -Property @{
-                    Sid = $Sid
+                    Sid            = $Sid
                     sAMAccountName = $SAM.Value
-                    }
-                Return $Result
                 }
-            catch
-            {
+                Return $Result
+            }
+            catch {
                 $Result = New-Object -TypeName PSObject -Property @{
-                    Sid = $Sid
+                    Sid            = $Sid
                     sAMAccountName = $Error[0].Exception.InnerException.Message.ToString().Trim()
-                    }
-                Return $Result
                 }
+                Return $Result
             }
         }
-    End
-    {
-        }
     }
-Function Set-ComputerName
-{
+    End {
+    }
+}
+Function Set-ComputerName {
     <#
         .SYNOPSIS
             Change the name of the computer
@@ -819,7 +738,7 @@ Function Set-ComputerName
         .PARAMETER ComputerName
             The NetBIOS name of the computer
         .PARAMETER Credentials
-            Provide administrator credentials 
+            Provide administrator credentials
         .PARAMETER Reboot
             True to reboot
         .EXAMPLE
@@ -843,89 +762,72 @@ Function Set-ComputerName
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$NewName,
         [string]$ComputerName = (hostname),
         $Credentials = (Get-Credential),
         [boolean]$Reboot
-        )
-    Begin
-    {
-        if ($ComputerName -eq (hostname))
-        {
+    )
+    Begin {
+        if ($ComputerName -eq (hostname)) {
             Write-Verbose "Using ComputerName as a switch to determine if we run wmi local or remote"
-            try
-            {
+            try {
                 Write-Verbose "Grab the Win32_ComputerSystem class, this holds the rename method"
                 $ThisComputer = Get-WmiObject -Class Win32_ComputerSystem
                 Write-Verbose "Grab the Win32_OperatingSystem class, this holds the reboot method"
                 $RebootComputer = Get-WmiObject -Class Win32_OperatingSystem
-                }
-            catch
-            {
-                Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-                }
             }
-        else
-        {
-            try
-            {
+            catch {
+                Return $Error[0].Exception.InnerException.Message.ToString().Trim()
+            }
+        }
+        else {
+            try {
                 Write-Verbose "Grab the Win32_ComputerSystem class, this holds the rename method"
                 $ThisComputer = Get-WmiObject -Class Win32_ComputerSystem -ComputerName $ComputerName -Credential $Credentials -Authentication 6
                 Write-Verbose "Grab the Win32_OperatingSystem class, this holds the reboot method"
                 $RebootComputer = Get-WmiObject -Class Win32_OperatingSystem -ComputerName $ComputerName -Credential $Credentials -Authentication 6
-                }
-            catch
-            {
+            }
+            catch {
                 Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-                }
             }
         }
-    Process
-    {
-        try
-        {
-            if ($ComputerName -eq (hostname))
-            {
+    }
+    Process {
+        try {
+            if ($ComputerName -eq (hostname)) {
                 Write-Verbose "Renaming $($ComputerName) to $($NewName)"
                 $RetVal = $ThisComputer.Rename($NewName)
-                }
-            else
-            {
+            }
+            else {
                 Write-Verbose "Renaming remote $($ComputerName) to $($NewName) requires credentials."
-                $RetVal = $ThisComputer.Rename($NewName,$Credentials.GetNetworkCredential().Password,$Credentials.UserName)
-                }
-            }
-        catch
-        {
-            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-            }
-        if ($Reboot -eq $true)
-        {
-            try
-            {
-                Write-Verbose "Rebooting $($ComputerName)"
-                $Reboot = $RebotComputer.InvokeMethod("Win32Shutdown",0)
-                }
-            catch
-            {
-                Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-                }
+                $RetVal = $ThisComputer.Rename($NewName, $Credentials.GetNetworkCredential().Password, $Credentials.UserName)
             }
         }
-    End
-    {
+        catch {
+            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
+        }
+        if ($Reboot -eq $true) {
+            try {
+                Write-Verbose "Rebooting $($ComputerName)"
+                $Reboot = $RebotComputer.InvokeMethod("Win32Shutdown", 0)
+            }
+            catch {
+                Return $Error[0].Exception.InnerException.Message.ToString().Trim()
+            }
+        }
+    }
+    End {
         $ReturnObject = New-Object -TypeName PSObject -Property @{
             OldName = $ComputerName
             NewName = $NewName
-            Reboot = $Reboot
+            Reboot  = $Reboot
             Success = $RetVal.ReturnValue
-            }
-        Return $ReturnObject
         }
+        Return $ReturnObject
     }
-Function Get-DomainName
-{
+}
+Function Get-DomainName {
     <#
         .SYNOPSIS
             Get the FQDN of the domain from an LDAP Url
@@ -951,38 +853,32 @@ Function Get-DomainName
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         $LdapUrl
-        )
-    Begin
-    {
-        if ($LdapUrl.GetType().Name -eq "String")
-        {
+    )
+    Begin {
+        if ($LdapUrl.GetType().Name -eq "String") {
             Write-Verbose "LDAP Url is a string"
             $tempUrl = $LdapURL.ToUpper()
-            }
-        elseif ($LdapUrl.GetType().Name -eq "DirectoryEntry")
-        {
+        }
+        elseif ($LdapUrl.GetType().Name -eq "DirectoryEntry") {
             Write-Verbose "LDAP Url is an directory object"
             $tempUrl = $LdapUrl.Path.ToString().ToUpper()
-            }
-        }
-    Process
-    {
-        Write-Verbose "Finding the first DC= and replacing it with a dot."
-        $DomainName = ($tempUrl.SubString($tempUrl.IndexOf(",DC=")+4)).Replace(",DC=",".")
-        $RetVal = New-Object -TypeName PSObject -Property @{
-            LdapUrl = $LdapUrl
-            DomainName = $DomainName.ToLower()
-            }
-        }
-    End
-    {
-        Return $RetVal
         }
     }
-Function Get-UserGroupMembership
-{
+    Process {
+        Write-Verbose "Finding the first DC= and replacing it with a dot."
+        $DomainName = ($tempUrl.SubString($tempUrl.IndexOf(",DC=") + 4)).Replace(",DC=", ".")
+        $RetVal = New-Object -TypeName PSObject -Property @{
+            LdapUrl    = $LdapUrl
+            DomainName = $DomainName.ToLower()
+        }
+    }
+    End {
+        Return $RetVal
+    }
+}
+Function Get-UserGroupMembership {
     <#
         .SYNOPSIS
             Get a list of groups as displayed on the user objects Member of tab
@@ -1026,49 +922,40 @@ Function Get-UserGroupMembership
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         $UserDN
-        )
-    Begin
-    {
-        if ($UserDN -notmatch "LDAP://*")
-        {
+    )
+    Begin {
+        if ($UserDN -notmatch "LDAP://*") {
             $UserDN = "LDAP://$($UserDN)"
-            }
-        try
-        {
+        }
+        try {
             Write-Verbose "Attempting to connect to $($UserDN) to return a list of groups."
             $Groups = ([adsi]$UserDN).MemberOf
-            }
-        Catch
-        {
-            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-            }
         }
-    Process
-    {
-        if ($Groups)
-        {
+        Catch {
+            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
+        }
+    }
+    Process {
+        if ($Groups) {
             Write-Verbose "Object has group membership."
             $GroupMembership = @()
-            foreach ($Group in $Groups)
-            {
+            foreach ($Group in $Groups) {
                 Write-Verbose "Adding $($Group) to the collection to return."
                 $GroupEntry = New-Object -TypeName PSObject -Property @{
                     GroupDN = $Group
-                    }
-                $GroupMembership += $GroupEntry
                 }
+                $GroupMembership += $GroupEntry
             }
         }
-    End
-    {
-        Return $GroupMembership
-        }
     }
-Function Add-UserToGroup
-{
+    End {
+        Return $GroupMembership
+    }
+}
+Function Add-UserToGroup {
     <#
         .SYNOPSIS
             Add a domain user to a domain group
@@ -1097,45 +984,37 @@ Function Add-UserToGroup
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         $GroupDN,
         $UserDN
-        )
-    Begin
-    {
-        if ($GroupDN -notmatch "LDAP://*")
-        {
+    )
+    Begin {
+        if ($GroupDN -notmatch "LDAP://*") {
             $GroupDN = "LDAP://$($GroupDN)"
-            }
-        if ($UserDN -notmatch "LDAP://*")
-        {
+        }
+        if ($UserDN -notmatch "LDAP://*") {
             $UserDN = "LDAP://$($UserDN)"
-            }
-        }
-    Process
-    {
-        try
-        {
-            ([adsi]$GroupDN).Add($UserDN)
-            $RetVal = $?
-            }
-        catch
-        {
-            $RetVal = $Error[0].Exception.InnerException.Message.ToString().Trim()
-            }
-        }
-    End
-    {
-        $GroupUpdated = New-Object -TypeName PSObject -Property @{
-            GroupDN = $GroupDN
-            UserDN = $UserDN
-            Added = $RetVal
-            }
-        Return $GroupUpdated
         }
     }
-Function Set-ADObjectProperties
-{
+    Process {
+        try {
+            ([adsi]$GroupDN).Add($UserDN)
+            $RetVal = $?
+        }
+        catch {
+            $RetVal = $Error[0].Exception.InnerException.Message.ToString().Trim()
+        }
+    }
+    End {
+        $GroupUpdated = New-Object -TypeName PSObject -Property @{
+            GroupDN = $GroupDN
+            UserDN  = $UserDN
+            Added   = $RetVal
+        }
+        Return $GroupUpdated
+    }
+}
+Function Set-ADObjectProperties {
     <#
         .SYNOPSIS
             Set the properties of a given object in AD
@@ -1166,67 +1045,57 @@ Function Set-ADObjectProperties
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         $ADObject,
         $PropertyPairs
-        )
-    Begin
-    {
-        if ($ADObject -notmatch "LDAP://*")
-        {
+    )
+    Begin {
+        if ($ADObject -notmatch "LDAP://*") {
             $ADObject = "LDAP://$($Adobject)"
-            }
+        }
         Write-Verbose "Storing the object as a Directory Entry so we can modify it."
         $ADObject = New-Object DirectoryServices.DirectoryEntry $ADObject
-        }
-    Process
-    {
+    }
+    Process {
         Write-Verbose "Work through an array of 0 or more PropertyPairs."
-        foreach ($PropertyPair in $PropertyPairs)
-        {
+        foreach ($PropertyPair in $PropertyPairs) {
             Write-Verbose "Split this PropertyPair on comma."
             $PropertyPair = $PropertyPair.Split(",")
-            if ($PropertyPair.Count -eq 2)
-            {
+            if ($PropertyPair.Count -eq 2) {
                 Write-Verbose "Assign PropertyName to PropertyPair[0]"
                 $PropertyName = $PropertyPair[0]
                 Write-Verbose "Assign PropertyValue to PropertyPair[1]"
                 $PropertyValue = $PropertyPair[1]
 
                 Write-Verbose "Assign the property of the object, the value"
-                $ADObject.Put($PropertyName,$PropertyValue)
-                }
-            elseif ($PropertyPair.Count -gt 2)
-            {
+                $ADObject.Put($PropertyName, $PropertyValue)
+            }
+            elseif ($PropertyPair.Count -gt 2) {
                 Write-Verbose "Multi-valued property detected"
                 Write-Verbose "Assign PropertyName to PropertyPair[0]"
                 $PropertyName = $PropertyPair[0]
                 Write-Verbose "Assign remaining values to PropertyValues"
-                $PropertyValues = $PropertyPair[1..(($PropertyPair.Count)-1)]
+                $PropertyValues = $PropertyPair[1..(($PropertyPair.Count) - 1)]
 
                 Write-Verbose "Assign the property of the object, the values"
-                $ADObject.PutEx(2,$PropertyName,$PropertyValues)
-                }
+                $ADObject.PutEx(2, $PropertyName, $PropertyValues)
+            }
             Write-Verbose "Save property changes to object"
-            try
-            {
+            try {
                 $ADObject.SetInfo()
                 $ADObject.RefreshCache()
-                }
-            catch
-            {
+            }
+            catch {
                 Return $Error[0]
-                }
             }
         }
-    End
-    {
-        return $ADObject
-        }
     }
-Function Rename-Adobject
-{
-<#
+    End {
+        return $ADObject
+    }
+}
+Function Rename-Adobject {
+    <#
     .SYNOPSIS
         Rename an object in Active Directory
     .DESCRIPTION
@@ -1256,47 +1125,40 @@ Function Rename-Adobject
 #>
     [CmdletBinding()]
     Param
-        (
+    (
         $Adobject,
         $Name
-        )
-    Begin
-    {
-        if ($ADObject -notmatch "LDAP://*")
-        {
+    )
+    Begin {
+        if ($ADObject -notmatch "LDAP://*") {
             $ADObject = "LDAP://$($Adobject)"
-            }
+        }
         Write-Verbose "Storing the object as a Directory Entry so we can modify it."
         $ADObject = New-Object DirectoryServices.DirectoryEntry $ADObject
-        }
-    Process
-    {
-        try
-        {
+    }
+    Process {
+        try {
             $ErrorActionPreference = "Stop"
             $sAMAccountName = $Adobject.sAMAccountName.ToString()
             $userPrincipalName = $Adobject.userPrincipalName.ToString()
             $path = $Adobject.Path.ToString()
             $Adobject.Rename("cn=$($Name)")
-            $Adobject.Put("sAMAccountName",$Name)
+            $Adobject.Put("sAMAccountName", $Name)
             $Adobject.SetInfo()
             $Adobject.RefreshCache()
-            $Adobject.Put("userPrincipalName",$userPrincipalName.Replace($sAMAccountName,$Name))
+            $Adobject.Put("userPrincipalName", $userPrincipalName.Replace($sAMAccountName, $Name))
             $Adobject.SetInfo()
             $Adobject.RefreshCache()
-            }
-        catch
-        {
-            Write-Error $Error[0]
-            }
         }
-    End
-    {
-        return $Adobject
+        catch {
+            Write-Error $Error[0]
         }
     }
-Function Get-GPO
-{
+    End {
+        return $Adobject
+    }
+}
+Function Get-GPO {
     <#
         .SYNOPSIS
             Return a list of all GPO's in a domain.
@@ -1377,48 +1239,39 @@ Function Get-GPO
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$Domain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name,
         [string]$GpoID
-        )
-    Begin
-    {
-        Try
-        {
+    )
+    Begin {
+        Try {
             Write-Verbose "Instantiating GroupPolicy Management API"
             $GpoMgmt = New-Object -ComObject gpmgmt.gpm
-            }
-        catch
-        {
+        }
+        catch {
             Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-            }
+        }
         $GpoGuid = "{$($GpoID.Replace('{','').Replace('}',''))}"
-        }
-    Process
-    {
-        try
-        {
+    }
+    Process {
+        try {
             $GpoConstants = $GpoMgmt.GetConstants()
-            $GpoDomain = $GpoMgmt.GetDomain($Domain,$null,$GpoConstants.UseAnyDC)
+            $GpoDomain = $GpoMgmt.GetDomain($Domain, $null, $GpoConstants.UseAnyDC)
             $GpoSearchCriteria = $GpoMgmt.CreateSearchCriteria()
-            if ($GpoID)
-            {
+            if ($GpoID) {
                 $GpoSearchCriteria.Add($GpoConstants.SearchPropertyGPOID, $GpoConstants.SearchOpEquals, $GpoGuid)
-                }
+            }
             $GroupPolicyObjects = $GpoDomain.SearchGPOs($GpoSearchCriteria)
-            }
-        catch
-        {
-            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-            }
         }
-    End
-    {
-        Return $GroupPolicyObjects
+        catch {
+            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
         }
     }
-Function Get-UnlinkedGPO
- {
+    End {
+        Return $GroupPolicyObjects
+    }
+}
+Function Get-UnlinkedGPO {
     <#
         .SYNOPSIS
             Return a list of unlinked Group Policy Objects
@@ -1480,55 +1333,45 @@ Function Get-UnlinkedGPO
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$Domain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
-        )
-    Begin
-    {
-        Try
-        {
+    )
+    Begin {
+        Try {
             Write-Verbose "Instantiating GroupPolicy Management API"
             $GpoMgmt = New-Object -ComObject gpmgmt.gpm
-            }
-        catch
-        {
-            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-            }
-        
-        $unlinkedGPO = @()
         }
-    Process
-    {
-        try
-        {
+        catch {
+            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
+        }
+
+        $unlinkedGPO = @()
+    }
+    Process {
+        try {
             $GpoConstants = $GpoMgmt.GetConstants()
-            $GpoDomain = $GpoMgmt.GetDomain($Domain,$null,$GpoConstants.UseAnyDC)
+            $GpoDomain = $GpoMgmt.GetDomain($Domain, $null, $GpoConstants.UseAnyDC)
             $GpoSearchCriteria = $GpoMgmt.CreateSearchCriteria()
             $GroupPolicyObjects = $GpoDomain.SearchGPOs($GpoSearchCriteria)
 
-            foreach ($GroupPolicyObject in $GroupPolicyObjects)
-            {
+            foreach ($GroupPolicyObject in $GroupPolicyObjects) {
                 $GpoSearchCriteria = $GpoMgmt.CreateSearchCriteria()
                 $GpoSearchCriteria.Add($GpoConstants.SearchPropertySomLinks, $GpoConstants.SearchOpContains, $GroupPolicyObject)
                 $GpoSomLinks = $GpoDomain.SearchSoms($GpoSearchCriteria)
-                if ($GpoSomLinks.Count -eq 0)
-                {
+                if ($GpoSomLinks.Count -eq 0) {
                     $unlinkedGPO += $GroupPolicyObject
-                    }
                 }
             }
-        catch
-        {
-            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
-            }
         }
-    End
-    {
-        Return $unlinkedGPO
+        catch {
+            Return $Error[0].Exception.InnerException.Message.ToString().Trim()
         }
     }
-Function Get-DomainInfo
-{
+    End {
+        Return $unlinkedGPO
+    }
+}
+Function Get-DomainInfo {
     <#
         .SYNOPSIS
             Get basic information about the current domain
@@ -1544,12 +1387,12 @@ Function Get-DomainInfo
             DomainControllers       : {dc1.company.com,dc2.company.com}
             Children                : {}
             DomainMode              : Windows2003Domain
-            Parent                  : 
+            Parent                  :
             PdcRoleOwner            : dc1.company.com
             RidRoleOwner            : dc1.company.com
             InfrastructureRoleOwner : dc1.company.com
             Name                    : company.com
-            
+
             Description
             -----------
             Show the basic syntax of the command.
@@ -1562,27 +1405,23 @@ Function Get-DomainInfo
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$TargetDomain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
-        )
-    Begin
-    {
+    )
+    Begin {
         $ContextType = "Domain"
         Write-Verbose "Creating the Domain context to pass to the GetDomain method"
-        $DomainContext = New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext($ContextType,$TargetDomain)
-        }
-    Process
-    {
+        $DomainContext = New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext($ContextType, $TargetDomain)
+    }
+    Process {
         Write-Verbose "Call GetDomain to return information aobut the specified TargetDomain: $($TargetDomain)"
         $Domain = [System.DirectoryServices.ActiveDirectory.Domain]::GetDomain($DomainContext)
-        }
-    End
-    {
-        Return $Domain
-        }
     }
-Function Get-ForestInfo
-{
+    End {
+        Return $Domain
+    }
+}
+Function Get-ForestInfo {
     <#
         .SYNOPSIS
             Get basic information aobut the current forest.
@@ -1595,7 +1434,7 @@ Function Get-ForestInfo
             Get-ForestInfo
 
             Name                  : company.com
-            Sites                 : 
+            Sites                 :
             Domains               : {company.com}
             GlobalCatalogs        : {dc1.company.com}
             ApplicationPartitions : {DC=DomainDnsZones,DC=company,DC=com, DC=ForestDnsZones,DC=company,DC=com}
@@ -1604,7 +1443,7 @@ Function Get-ForestInfo
             Schema                : CN=Schema,CN=Configuration,DC=company,DC=com
             SchemaRoleOwner       : dc1.company.com
             NamingRoleOwner       : dc1.company.com
-            
+
             Description
             -----------
             Show the basic syntax of the command.
@@ -1617,27 +1456,23 @@ Function Get-ForestInfo
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$TargetDomain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
-        )
-    Begin
-    {
+    )
+    Begin {
         $ContextType = "Forest"
         Write-Verbose "Creating the Forest context to pass to the GetForest method"
-        $ForestContext = New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext($ContextType,$TargetDomain)
-        }
-    Process
-    {
-        Write-Verbose "Call GetForest to return information aobut the specified TargetDomain: $($TargetDomain)"
-        $Forest = [system.directoryservices.activedirectory.Forest]::GetForest($ForestContext) 
-        }
-    End
-    {
-        Return $Forest
-        }
+        $ForestContext = New-Object System.DirectoryServices.ActiveDirectory.DirectoryContext($ContextType, $TargetDomain)
     }
-Function ConvertFrom-Sid
-{
+    Process {
+        Write-Verbose "Call GetForest to return information aobut the specified TargetDomain: $($TargetDomain)"
+        $Forest = [system.directoryservices.activedirectory.Forest]::GetForest($ForestContext)
+    }
+    End {
+        Return $Forest
+    }
+}
+Function ConvertFrom-Sid {
     <#
         .SYNOPSIS
             Convert a Sid byte array to a string
@@ -1645,7 +1480,7 @@ Function ConvertFrom-Sid
             This function takes the Sid as a byte array and returns it as an
             object that has the Sid as a string.
         .PARAMETER ObjectSid
-            This is a Sid object, these are usually stored in a binary form inside 
+            This is a Sid object, these are usually stored in a binary form inside
             the object in Active Directory. When displayed they typically appear to
             be a column of numbers like this:
 
@@ -1681,20 +1516,20 @@ Function ConvertFrom-Sid
             This is converted to an object of type System.Security.Principal.IdentityReference.
         .EXAMPLE
             ConvertFrom-Sid -ObjectSid $Sid
-            
-            BinaryLength AccountDomainSid                       Value                                        
-            ------------ ----------------                       -----                                        
+
+            BinaryLength AccountDomainSid                       Value
+            ------------ ----------------                       -----
                       28 S-1-5-21-57989841-1078081533-682003330 S-1-5-21-57989841-1078081533-682003330-159172
 
             Description
             -----------
             This is the basic syntax of the command and shows the default output.
-            
+
         .EXAMPLE
             (ConvertFrom-Sid -ObjectSid $Computer.objectSid).Value
 
             S-1-5-21-57989841-1078081533-682003330-159172
-            
+
             Description
             -----------
             This example shows how to display just the Sid as a string.
@@ -1708,32 +1543,26 @@ Function ConvertFrom-Sid
     #>
     [CmdletBinding()]
     Param
-        (
-        $ObjectSid        
-        )
-    Begin
-    {
+    (
+        $ObjectSid
+    )
+    Begin {
         $ErrorActionPreference = 'Stop'
-        }
-    Process
-    {
-        try
-        {
-            $Sid = New-Object System.Security.Principal.SecurityIdentifier($ObjectSid[0],0)
+    }
+    Process {
+        try {
+            $Sid = New-Object System.Security.Principal.SecurityIdentifier($ObjectSid[0], 0)
             Return $Sid
-            }
-        catch
-        {
+        }
+        catch {
             $Message = $Error[0].Exception
             Return $Message
-            }
-        }
-    End
-    {
         }
     }
-Function ConvertTo-Sid
-{
+    End {
+    }
+}
+Function ConvertTo-Sid {
     <#
         .SYNOPSIS
             Convert a string Sid back to a byte array
@@ -1743,18 +1572,18 @@ Function ConvertTo-Sid
             a byte.
         .PARAMETER StringSid
             A string representation of a Sid object, for example:
-            
+
                 S-1-5-21-57989841-1078081533-682003330
         .EXAMPLE
             ConvertTo-Sid -StringSid S-1-5-21-57989841-1078081533-682003330
-            
+
             BinaryLength AccountDomainSid                       Value
             ------------ ----------------                       -----
                       28 S-1-5-21-57989841-1078081533-682003330 S-1-5-21-57989841-1078081533-682003330-233119
 
             Description
             -----------
-            
+
         .NOTES
             FunctionName : ConvertTo-Sid
             Created by   : jspatton
@@ -1764,32 +1593,26 @@ Function ConvertTo-Sid
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$StringSid
-        )
-    Begin
-    {
+    )
+    Begin {
         $ErrorActionPreference = 'Stop'
-        }
-    Process
-    {
-        try
-        {
+    }
+    Process {
+        try {
             $Sid = New-Object System.Security.Principal.SecurityIdentifier($StringSid)
             Return $Sid
-            }
-        catch
-        {
+        }
+        catch {
             $Message = $Error[0].Exception
             Return $Message
-            }
-        }
-    End
-    {
         }
     }
-Function ConvertTo-Accountname
-{
+    End {
+    }
+}
+Function ConvertTo-Accountname {
     <#
         .SYNOPSIS
             Return the accountname from the SID
@@ -1804,7 +1627,7 @@ Function ConvertTo-Accountname
             Value
             -----
             HOME\jspatton
-            
+
             Description
             -----------
             This example shows how to use the function to convert a security principal object
@@ -1818,32 +1641,26 @@ Function ConvertTo-Accountname
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [System.Security.Principal.IdentityReference]$ObjectSid
-        )
-    Begin
-    {
+    )
+    Begin {
         $ErrorActionPreference = 'Stop'
-        }
-    Process
-    {
-        try
-        {
+    }
+    Process {
+        try {
             $AccountName = $ObjectSid.Translate([System.Security.Principal.NTAccount])
             Return $AccountName
-            }
-        catch
-        {
+        }
+        catch {
             $Message = $Error[0].Exception
             Return $Message
-            }
-        }
-    End
-    {
         }
     }
-Function Get-Fqdn
-{
+    End {
+    }
+}
+Function Get-Fqdn {
     <#
         .SYNOPSIS
             A simple function to return the FQDN from a distinguishedName
@@ -1856,7 +1673,7 @@ Function Get-Fqdn
         .EXAMPLE
             Get-Fqdn -DistinguishedName 'DC=Company,DC=com'
             Company.com
-            
+
             Description
             -----------
             This is the only syntax for this command.
@@ -1869,35 +1686,28 @@ Function Get-Fqdn
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$DistinguishedName = ([adsi]"").DistinguishedName
-        )
-    Begin
-    {
-        }
-    Process
-    {
+    )
+    Begin {
+    }
+    Process {
         $DnPart = $DistinguishedName.Split(',')
-        foreach ($Attrib in $DnPart)
-        {
-            if ($Counter -ne ($DnPart.Count) -1)
-            {
-                $Fqdn += $Attrib.Substring(3,$Attrib.Length -3) + '.'
-                }
-            else
-            {
-                $Fqdn += $Attrib.Substring(3,$Attrib.Length -3)
-                }
-            $Counter += 1
+        foreach ($Attrib in $DnPart) {
+            if ($Counter -ne ($DnPart.Count) - 1) {
+                $Fqdn += $Attrib.Substring(3, $Attrib.Length - 3) + '.'
             }
-        }
-    End
-    {
-        Return $Fqdn
+            else {
+                $Fqdn += $Attrib.Substring(3, $Attrib.Length - 3)
+            }
+            $Counter += 1
         }
     }
-Function ConvertTo-Rfc1779
-{
+    End {
+        Return $Fqdn
+    }
+}
+Function ConvertTo-Rfc1779 {
     <#
         .SYNOPSIS
         .DESCRIPTION
@@ -1916,65 +1726,57 @@ Function ConvertTo-Rfc1779
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$Name,
-        [ValidateSet(1,2,3)]
+        [ValidateSet(1, 2, 3)]
         [int]$InitType = 3,
         [string]$ConnectionObject
-        )
-    Begin
-    {
+    )
+    Begin {
         $AdsNameType = 4
         $ReturnType = 1
 
-        if ($Name.IndexOf('cn=') -ne -1){$AdsNameType = 1}
-        if ($Name.IndexOf('/') -ne -1){$AdsNameType = 2}
-        if ($Name.IndexOf('\') -ne -1){$AdsNameType = 3}
-        if ($Name.IndexOf('@') -ne -1){$AdsNameType = 5}
-        if ($Name.IndexOf('{') -ne -1){$AdsNameType = 7}
+        if ($Name.IndexOf('cn=') -ne -1) { $AdsNameType = 1 }
+        if ($Name.IndexOf('/') -ne -1) { $AdsNameType = 2 }
+        if ($Name.IndexOf('\') -ne -1) { $AdsNameType = 3 }
+        if ($Name.IndexOf('@') -ne -1) { $AdsNameType = 5 }
+        if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
-        if (($InitType -eq 1) -and ($ConnectionObject -eq ""))
-        {
+        if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
-            }
-        if (($InitType -eq 2) -and ($ConnectionObject -eq ""))
-        {
+        }
+        if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
-            }
-        if ($InitType -eq 3){$ConnectionObject = $null}
         }
-    Process
-    {
+        if ($InitType -eq 3) { $ConnectionObject = $null }
+    }
+    Process {
         $NameTranslate = New-Object -ComObject NameTranslate
         $type = $NameTranslate.GetType()
-        $type.InvokeMember("Init","InvokeMethod",$null,$NameTranslate,($InitType,$ConnectionObject))
-        $type.InvokeMember("Set","InvokeMethod",$null,$NameTranslate,($AdsNameType, $Name))
-        try
-        {
-            $NameTranslated = $type.InvokeMember("Get","InvokeMethod",$null,$NameTranslate,$ReturnType)
+        $type.InvokeMember("Init", "InvokeMethod", $null, $NameTranslate, ($InitType, $ConnectionObject))
+        $type.InvokeMember("Set", "InvokeMethod", $null, $NameTranslate, ($AdsNameType, $Name))
+        try {
+            $NameTranslated = $type.InvokeMember("Get", "InvokeMethod", $null, $NameTranslate, $ReturnType)
             $ADS_NAME_TYPE_1779 = New-Object -TypeName PSObject -Property @{
-                Name = $Name
+                Name          = $Name
                 ADS_NAME_TYPE = $AdsNameType
-                Value = $NameTranslated
-                }
+                Value         = $NameTranslated
             }
-        catch
-        {
+        }
+        catch {
             Write-Error $Error[0]
             break
-            }
-        }
-    End
-    {
-        Return $ADS_NAME_TYPE_1779
         }
     }
-Function ConvertTo-Canonical
-{
+    End {
+        Return $ADS_NAME_TYPE_1779
+    }
+}
+Function ConvertTo-Canonical {
     <#
         .SYNOPSIS
         .DESCRIPTION
@@ -1989,65 +1791,57 @@ Function ConvertTo-Canonical
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$Name,
-        [ValidateSet(1,2,3)]
+        [ValidateSet(1, 2, 3)]
         [int]$InitType = 3,
         [string]$ConnectionObject
-        )
-    Begin
-    {
+    )
+    Begin {
         $AdsNameType = 4
         $ReturnType = 2
 
-        if ($Name.IndexOf('dc=') -ne -1){$AdsNameType = 1}
-        if ($Name.IndexOf('/') -ne -1){$AdsNameType = 2}
-        if ($Name.IndexOf('\') -ne -1){$AdsNameType = 3}
-        if ($Name.IndexOf('@') -ne -1){$AdsNameType = 5}
-        if ($Name.IndexOf('{') -ne -1){$AdsNameType = 7}
+        if ($Name.IndexOf('dc=') -ne -1) { $AdsNameType = 1 }
+        if ($Name.IndexOf('/') -ne -1) { $AdsNameType = 2 }
+        if ($Name.IndexOf('\') -ne -1) { $AdsNameType = 3 }
+        if ($Name.IndexOf('@') -ne -1) { $AdsNameType = 5 }
+        if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
-        if (($InitType -eq 1) -and ($ConnectionObject -eq ""))
-        {
+        if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
-            }
-        if (($InitType -eq 2) -and ($ConnectionObject -eq ""))
-        {
+        }
+        if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
-            }
-        if ($InitType -eq 3){$ConnectionObject = $null}
         }
-    Process
-    {
+        if ($InitType -eq 3) { $ConnectionObject = $null }
+    }
+    Process {
         $NameTranslate = New-Object -ComObject NameTranslate
         $type = $NameTranslate.GetType()
-        $type.InvokeMember("Init","InvokeMethod",$null,$NameTranslate,($InitType,$ConnectionObject))
-        $type.InvokeMember("Set","InvokeMethod",$null,$NameTranslate,($AdsNameType, $Name))
-        try
-        {
-            $NameTranslated = $type.InvokeMember("Get","InvokeMethod",$null,$NameTranslate,$ReturnType)
+        $type.InvokeMember("Init", "InvokeMethod", $null, $NameTranslate, ($InitType, $ConnectionObject))
+        $type.InvokeMember("Set", "InvokeMethod", $null, $NameTranslate, ($AdsNameType, $Name))
+        try {
+            $NameTranslated = $type.InvokeMember("Get", "InvokeMethod", $null, $NameTranslate, $ReturnType)
             $ADS_NAME_TYPE_CANONICAL = New-Object -TypeName PSObject -Property @{
-                Name = $Name
+                Name          = $Name
                 ADS_NAME_TYPE = $AdsNameType
-                Value = $NameTranslated
-                }
+                Value         = $NameTranslated
             }
-        catch
-        {
+        }
+        catch {
             Write-Error $Error[0]
             break
-            }
-        }
-    End
-    {
-        Return $ADS_NAME_TYPE_CANONICAL
         }
     }
-Function ConvertTo-Nt4
-{
+    End {
+        Return $ADS_NAME_TYPE_CANONICAL
+    }
+}
+Function ConvertTo-Nt4 {
     <#
         .SYNOPSIS
         .DESCRIPTION
@@ -2062,65 +1856,57 @@ Function ConvertTo-Nt4
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$Name,
-        [ValidateSet(1,2,3)]
+        [ValidateSet(1, 2, 3)]
         [int]$InitType = 3,
         [string]$ConnectionObject
-        )
-    Begin
-    {
+    )
+    Begin {
         $AdsNameType = 4
         $ReturnType = 3
 
-        if ($Name.IndexOf('cn=') -ne -1){$AdsNameType = 1}
-        if ($Name.IndexOf('/') -ne -1){$AdsNameType = 2}
-        if ($Name.IndexOf('\') -ne -1){$AdsNameType = 3}
-        if ($Name.IndexOf('@') -ne -1){$AdsNameType = 5}
-        if ($Name.IndexOf('{') -ne -1){$AdsNameType = 7}
+        if ($Name.IndexOf('cn=') -ne -1) { $AdsNameType = 1 }
+        if ($Name.IndexOf('/') -ne -1) { $AdsNameType = 2 }
+        if ($Name.IndexOf('\') -ne -1) { $AdsNameType = 3 }
+        if ($Name.IndexOf('@') -ne -1) { $AdsNameType = 5 }
+        if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
-        if (($InitType -eq 1) -and ($ConnectionObject -eq ""))
-        {
+        if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
-            }
-        if (($InitType -eq 2) -and ($ConnectionObject -eq ""))
-        {
+        }
+        if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
-            }
-        if ($InitType -eq 3){$ConnectionObject = $null}
         }
-    Process
-    {
+        if ($InitType -eq 3) { $ConnectionObject = $null }
+    }
+    Process {
         $NameTranslate = New-Object -ComObject NameTranslate
         $type = $NameTranslate.GetType()
-        $type.InvokeMember("Init","InvokeMethod",$null,$NameTranslate,($InitType,$ConnectionObject))
-        $type.InvokeMember("Set","InvokeMethod",$null,$NameTranslate,($AdsNameType, $Name))
-        try
-        {
-            $NameTranslated = $type.InvokeMember("Get","InvokeMethod",$null,$NameTranslate,$ReturnType)
+        $type.InvokeMember("Init", "InvokeMethod", $null, $NameTranslate, ($InitType, $ConnectionObject))
+        $type.InvokeMember("Set", "InvokeMethod", $null, $NameTranslate, ($AdsNameType, $Name))
+        try {
+            $NameTranslated = $type.InvokeMember("Get", "InvokeMethod", $null, $NameTranslate, $ReturnType)
             $ADS_NAME_TYPE_NT4 = New-Object -TypeName PSObject -Property @{
-                Name = $Name
+                Name          = $Name
                 ADS_NAME_TYPE = $AdsNameType
-                Value = $NameTranslated
-                }
+                Value         = $NameTranslated
             }
-        catch
-        {
+        }
+        catch {
             Write-Error $Error[0]
             break
-            }
-        }
-    End
-    {
-        Return $ADS_NAME_TYPE_NT4
         }
     }
-Function ConvertTo-Upn
-{
+    End {
+        Return $ADS_NAME_TYPE_NT4
+    }
+}
+Function ConvertTo-Upn {
     <#
         .SYNOPSIS
         .DESCRIPTION
@@ -2135,65 +1921,57 @@ Function ConvertTo-Upn
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$Name,
-        [ValidateSet(1,2,3)]
+        [ValidateSet(1, 2, 3)]
         [int]$InitType = 3,
         [string]$ConnectionObject
-        )
-    Begin
-    {
+    )
+    Begin {
         $AdsNameType = 4
         $ReturnType = 9
 
-        if ($Name.IndexOf('cn=') -ne -1){$AdsNameType = 1}
-        if ($Name.IndexOf('/') -ne -1){$AdsNameType = 2}
-        if ($Name.IndexOf('\') -ne -1){$AdsNameType = 3}
-        if ($Name.IndexOf('@') -ne -1){$AdsNameType = 5}
-        if ($Name.IndexOf('{') -ne -1){$AdsNameType = 7}
+        if ($Name.IndexOf('cn=') -ne -1) { $AdsNameType = 1 }
+        if ($Name.IndexOf('/') -ne -1) { $AdsNameType = 2 }
+        if ($Name.IndexOf('\') -ne -1) { $AdsNameType = 3 }
+        if ($Name.IndexOf('@') -ne -1) { $AdsNameType = 5 }
+        if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
-        if (($InitType -eq 1) -and ($ConnectionObject -eq ""))
-        {
+        if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
-            }
-        if (($InitType -eq 2) -and ($ConnectionObject -eq ""))
-        {
+        }
+        if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
-            }
-        if ($InitType -eq 3){$ConnectionObject = $null}
         }
-    Process
-    {
+        if ($InitType -eq 3) { $ConnectionObject = $null }
+    }
+    Process {
         $NameTranslate = New-Object -ComObject NameTranslate
         $type = $NameTranslate.GetType()
-        $type.InvokeMember("Init","InvokeMethod",$null,$NameTranslate,($InitType,$ConnectionObject))
-        $type.InvokeMember("Set","InvokeMethod",$null,$NameTranslate,($AdsNameType, $Name))
-        try
-        {
-            $NameTranslated = $type.InvokeMember("Get","InvokeMethod",$null,$NameTranslate,$ReturnType)
+        $type.InvokeMember("Init", "InvokeMethod", $null, $NameTranslate, ($InitType, $ConnectionObject))
+        $type.InvokeMember("Set", "InvokeMethod", $null, $NameTranslate, ($AdsNameType, $Name))
+        try {
+            $NameTranslated = $type.InvokeMember("Get", "InvokeMethod", $null, $NameTranslate, $ReturnType)
             $ADS_NAME_TYPE_USER_PRINCIPAL_NAME = New-Object -TypeName PSObject -Property @{
-                Name = $Name
+                Name          = $Name
                 ADS_NAME_TYPE = $AdsNameType
-                Value = $NameTranslated
-                }
+                Value         = $NameTranslated
             }
-        catch
-        {
+        }
+        catch {
             Write-Error $Error[0]
             break
-            }
-        }
-    End
-    {
-        Return $ADS_NAME_TYPE_USER_PRINCIPAL_NAME
         }
     }
-Function ConvertTo-Guid
-{
+    End {
+        Return $ADS_NAME_TYPE_USER_PRINCIPAL_NAME
+    }
+}
+Function ConvertTo-Guid {
     <#
         .SYNOPSIS
         .DESCRIPTION
@@ -2208,65 +1986,57 @@ Function ConvertTo-Guid
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$Name,
-        [ValidateSet(1,2,3)]
+        [ValidateSet(1, 2, 3)]
         [int]$InitType = 3,
         [string]$ConnectionObject
-        )
-    Begin
-    {
+    )
+    Begin {
         $AdsNameType = 4
         $ReturnType = 7
 
-        if ($Name.IndexOf('cn=') -ne -1){$AdsNameType = 1}
-        if ($Name.IndexOf('/') -ne -1){$AdsNameType = 2}
-        if ($Name.IndexOf('\') -ne -1){$AdsNameType = 3}
-        if ($Name.IndexOf('@') -ne -1){$AdsNameType = 5}
-        if ($Name.IndexOf('{') -ne -1){$AdsNameType = 7}
+        if ($Name.IndexOf('cn=') -ne -1) { $AdsNameType = 1 }
+        if ($Name.IndexOf('/') -ne -1) { $AdsNameType = 2 }
+        if ($Name.IndexOf('\') -ne -1) { $AdsNameType = 3 }
+        if ($Name.IndexOf('@') -ne -1) { $AdsNameType = 5 }
+        if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
-        if (($InitType -eq 1) -and ($ConnectionObject -eq ""))
-        {
+        if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
-            }
-        if (($InitType -eq 2) -and ($ConnectionObject -eq ""))
-        {
+        }
+        if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
-            }
-        if ($InitType -eq 3){$ConnectionObject = $null}
         }
-    Process
-    {
+        if ($InitType -eq 3) { $ConnectionObject = $null }
+    }
+    Process {
         $NameTranslate = New-Object -ComObject NameTranslate
         $type = $NameTranslate.GetType()
-        $type.InvokeMember("Init","InvokeMethod",$null,$NameTranslate,($InitType,$ConnectionObject))
-        $type.InvokeMember("Set","InvokeMethod",$null,$NameTranslate,($AdsNameType, $Name))
-        try
-        {
-            $NameTranslated = $type.InvokeMember("Get","InvokeMethod",$null,$NameTranslate,$ReturnType)
+        $type.InvokeMember("Init", "InvokeMethod", $null, $NameTranslate, ($InitType, $ConnectionObject))
+        $type.InvokeMember("Set", "InvokeMethod", $null, $NameTranslate, ($AdsNameType, $Name))
+        try {
+            $NameTranslated = $type.InvokeMember("Get", "InvokeMethod", $null, $NameTranslate, $ReturnType)
             $ADS_NAME_TYPE_GUID = New-Object -TypeName PSObject -Property @{
-                Name = $Name
+                Name          = $Name
                 ADS_NAME_TYPE = $AdsNameType
-                Value = $NameTranslated
-                }
+                Value         = $NameTranslated
             }
-        catch
-        {
+        }
+        catch {
             Write-Error $Error[0]
             break
-            }
-        }
-    End
-    {
-        Return $ADS_NAME_TYPE_GUID
         }
     }
-Function ConvertTo-Display
-{
+    End {
+        Return $ADS_NAME_TYPE_GUID
+    }
+}
+Function ConvertTo-Display {
     <#
         .SYNOPSIS
         .DESCRIPTION
@@ -2281,65 +2051,57 @@ Function ConvertTo-Display
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true)]
+    (
+        [Parameter(Mandatory = $true)]
         [string]$Name,
-        [ValidateSet(1,2,3)]
+        [ValidateSet(1, 2, 3)]
         [int]$InitType = 3,
         [string]$ConnectionObject
-        )
-    Begin
-    {
+    )
+    Begin {
         $AdsNameType = 4
         $ReturnType = 4
 
-        if ($Name.IndexOf('cn=') -ne -1){$AdsNameType = 1}
-        if ($Name.IndexOf('/') -ne -1){$AdsNameType = 2}
-        if ($Name.IndexOf('\') -ne -1){$AdsNameType = 3}
-        if ($Name.IndexOf('@') -ne -1){$AdsNameType = 5}
-        if ($Name.IndexOf('{') -ne -1){$AdsNameType = 7}
+        if ($Name.IndexOf('cn=') -ne -1) { $AdsNameType = 1 }
+        if ($Name.IndexOf('/') -ne -1) { $AdsNameType = 2 }
+        if ($Name.IndexOf('\') -ne -1) { $AdsNameType = 3 }
+        if ($Name.IndexOf('@') -ne -1) { $AdsNameType = 5 }
+        if ($Name.IndexOf('{') -ne -1) { $AdsNameType = 7 }
 
-        if (($InitType -eq 1) -and ($ConnectionObject -eq ""))
-        {
+        if (($InitType -eq 1) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to domain'
             $ConnectionObject = ([adsi]"").Name
-            }
-        if (($InitType -eq 2) -and ($ConnectionObject -eq ""))
-        {
+        }
+        if (($InitType -eq 2) -and ($ConnectionObject -eq "")) {
             Write-Host 'setting connectionobject to dc'
             $Forest = [system.directoryservices.activedirectory.forest]::GetCurrentForest()
             $ConnectionObject = $Forest.SchemaRoleOwner.Name
-            }
-        if ($InitType -eq 3){$ConnectionObject = $null}
         }
-    Process
-    {
+        if ($InitType -eq 3) { $ConnectionObject = $null }
+    }
+    Process {
         $NameTranslate = New-Object -ComObject NameTranslate
         $type = $NameTranslate.GetType()
-        $type.InvokeMember("Init","InvokeMethod",$null,$NameTranslate,($InitType,$ConnectionObject))
-        $type.InvokeMember("Set","InvokeMethod",$null,$NameTranslate,($AdsNameType, $Name))
-        try
-        {
-            $NameTranslated = $type.InvokeMember("Get","InvokeMethod",$null,$NameTranslate,$ReturnType)
+        $type.InvokeMember("Init", "InvokeMethod", $null, $NameTranslate, ($InitType, $ConnectionObject))
+        $type.InvokeMember("Set", "InvokeMethod", $null, $NameTranslate, ($AdsNameType, $Name))
+        try {
+            $NameTranslated = $type.InvokeMember("Get", "InvokeMethod", $null, $NameTranslate, $ReturnType)
             $ADS_NAME_TYPE_DISPLAY = New-Object -TypeName PSObject -Property @{
-                Name = $Name
+                Name          = $Name
                 ADS_NAME_TYPE = $AdsNameType
-                Value = $NameTranslated
-                }
+                Value         = $NameTranslated
             }
-        catch
-        {
+        }
+        catch {
             Write-Error $Error[0]
             break
-            }
-        }
-    End
-    {
-        Return $ADS_NAME_TYPE_DISPLAY
         }
     }
-Function Get-GpoLink
-{
+    End {
+        Return $ADS_NAME_TYPE_DISPLAY
+    }
+}
+Function Get-GpoLink {
     <#
         .SYNOPSIS
         .DESCRIPTION
@@ -2354,63 +2116,53 @@ Function Get-GpoLink
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$Gpo,
         [switch]$Path
-        )
-    Begin
-    {
-        $AdsPath = "LDAP://"+([adsi]"").distinguishedName
-        if ($Path)
-        {
-            if ($Gpo -notmatch "LDAP://*")
-            {
+    )
+    Begin {
+        $AdsPath = "LDAP://" + ([adsi]"").distinguishedName
+        if ($Path) {
+            if ($Gpo -notmatch "LDAP://*") {
                 $SearchFilter = "(gPlink=[LDAP://$($GPO);0])"
-                }
-            else
-            {
-                $SearchFilter = "(gPlink=[$($GPO);0])"
-                }
             }
-        else
-        {
-            $SearchFilter = "(gplink=[*$($Gpo)*;0])"
+            else {
+                $SearchFilter = "(gPlink=[$($GPO);0])"
             }
         }
-    Process
-    {
-        Try
-        {
+        else {
+            $SearchFilter = "(gplink=[*$($Gpo)*;0])"
+        }
+    }
+    Process {
+        Try {
             $DirectoryEntry = New-Object System.DirectoryServices.DirectoryEntry($ADSPath)
             $DirectorySearcher = New-Object System.DirectoryServices.DirectorySearcher
             $DirectorySearcher.SearchRoot = $DirectoryEntry
             $DirectorySearcher.PageSize = 1000
             $DirectorySearcher.Filter = $SearchFilter
             $DirectorySearcher.SearchScope = "Subtree"
-            
-            $GpoLink = $DirectorySearcher.FindAll()
-            }
-        catch
-        {
-            }
 
+            $GpoLink = $DirectorySearcher.FindAll()
         }
-    End
-    {
-        Return $GpoLink
+        catch {
         }
+
     }
-Function Get-NetlogonLog
-{
+    End {
+        Return $GpoLink
+    }
+}
+Function Get-NetlogonLog {
     <#
         .SYNOPSIS
             Parse the netlogon.log file
         .DESCRIPTION
-            This function will read in the netlogon.log file and return a properly 
+            This function will read in the netlogon.log file and return a properly
             formatted object. A regex is used to split up each line of the file and
             build fields for the returned output.
 
-            Some entries in the log will have an octal code, this code if found is 
+            Some entries in the log will have an octal code, this code if found is
             processed and a definition is returned as part of the object.
         .PARAMETER Logpath
             The path to where netlogon.log can be found, this is set to the default
@@ -2435,8 +2187,8 @@ Function Get-NetlogonLog
         .EXAMPLE
             Get-NetlogonLog -DebugLog
 
-            Date  Time     Type  Message                                                                                                                                           
-            ----  ----     ----  -------                                                                                                                                           
+            Date  Time     Type  Message
+            ----  ----     ----  -------
             11/08 12:23:01 LOGON HOME: NlPickDomainWithAccount: WORKGROUP\Administrator:...
             11/08 12:23:01 LOGON HOME: SamLogon: Transitive Network logon of WORKGROUP\A...
             11/08 12:23:01 LOGON HOME: SamLogon: Transitive Network logon of WORKGROUP\A...
@@ -2458,84 +2210,74 @@ Function Get-NetlogonLog
     #>
     [CmdletBinding()]
     Param
-        (
+    (
         [string]$LogPath = "C:\Windows\Debug\netlogon.log",
         [switch]$DebugLog
-        )
-    Begin
-    {
+    )
+    Begin {
         $Codes = @{
-            "0x0"="Successful Login"
-            "0xC0000064"="The specified user does not exist"
-            "0xC000006A"="The value provided as the current password is not correct"
-            "0xC000006C"="Password policy not met"
-            "0xC000006D"="The attempted logon is invalid due to bad user name"
-            "0xC000006E"="User account restriction has prevented successful login"
-            "0xC000006F"="The user account has time restrictions and may not be logged onto at this time"
-            "0xC0000070"="The user is restricted and may not log on from the source workstation"
-            "0xC0000071"="The user account's password has expired"
-            "0xC0000072"="The user account is currently disabled"
-            "0xC000009A"="Insufficient system resources"
-            "0xC0000193"="The user's account has expired"
-            "0xC0000224"="User must change his password before he logs on the first time"
-            "0xC0000234"="The user account has been automatically locked"
-            }
+            "0x0"        = "Successful Login"
+            "0xC0000064" = "The specified user does not exist"
+            "0xC000006A" = "The value provided as the current password is not correct"
+            "0xC000006C" = "Password policy not met"
+            "0xC000006D" = "The attempted logon is invalid due to bad user name"
+            "0xC000006E" = "User account restriction has prevented successful login"
+            "0xC000006F" = "The user account has time restrictions and may not be logged onto at this time"
+            "0xC0000070" = "The user is restricted and may not log on from the source workstation"
+            "0xC0000071" = "The user account's password has expired"
+            "0xC0000072" = "The user account is currently disabled"
+            "0xC000009A" = "Insufficient system resources"
+            "0xC0000193" = "The user's account has expired"
+            "0xC0000224" = "User must change his password before he logs on the first time"
+            "0xC0000234" = "The user account has been automatically locked"
+        }
 
-        if ($DebugLog)
-        {
+        if ($DebugLog) {
             [regex]$regex = "^(?<Date>\d{1,2}/\d{1,2})\s{1}(?<Time>\d{1,2}:\d{1,2}:\d{1,2})\s{1}(?<Type>\[[A-Z]*\])\s{1}(?<Message>.*)"
             [regex]$Code = "(?<Code>(\d{1}[x]\d{1})|(\d{1}[x]{1}[C]{1}\d{1,}))"
-            }
-        else
-        {
-            [regex]$regex = "^(?<Date>\d{1,2}/\d{1,2})\s{1}(?<Time>\d{1,2}:\d{1,2}:\d{1,2})\s{1}(?<Message>.*[:])\s{1}(?<Computer>[-a-zA-Z0-9_']{1,15})\s{1}(?<Address>(?:\d{1,3}\.){3}\d{1,3})"
-            }        $Object = @()
         }
-    Process
-    {
-        foreach ($Line in (Get-Content $LogPath))
-        {
+        else {
+            [regex]$regex = "^(?<Date>\d{1,2}/\d{1,2})\s{1}(?<Time>\d{1,2}:\d{1,2}:\d{1,2})\s{1}(?<Message>.*[:])\s{1}(?<Computer>[-a-zA-Z0-9_']{1,15})\s{1}(?<Address>(?:\d{1,3}\.){3}\d{1,3})"
+        }        $Object = @()
+    }
+    Process {
+        foreach ($Line in (Get-Content $LogPath)) {
             Write-Verbose "Parse each line of the file to build object"
-            $Line -match $regex |Out-Null
-            if ($DebugLog)
-            {
+            $Line -match $regex | Out-Null
+            if ($DebugLog) {
                 $Item = New-Object -TypeName psobject -Property @{
-                    Date = $Matches.Date
-                    Time = $Matches.Time
-                    Type = $Matches.Type.Replace('[','').Replace(']','')
+                    Date    = $Matches.Date
+                    Time    = $Matches.Time
+                    Type    = $Matches.Type.Replace('[', '').Replace(']', '')
                     Message = $Matches.Message
-                    }
+                }
 
                 Write-Verbose "Check to see if the Message contains a code"
-                $Item.Message -match $Code |Out-Null
-                if ($Matches.Code)
-                {
+                $Item.Message -match $Code | Out-Null
+                if ($Matches.Code) {
                     Write-Verbose "Code found, adding definition to message"
                     $Item.Message += " : $($Codes.Item($Matches.Code))"
-                    }
-                $Object += $Item |Select-Object -Property Date, Time, Type, Message
                 }
-            else
-            {
+                $Object += $Item | Select-Object -Property Date, Time, Type, Message
+            }
+            else {
                 $Item = New-Object -TypeName psobject -Property @{
-                    Date = $Matches.Date
-                    Time = $Matches.Time
-                    Message = $Matches.Message.Replace(':','')
+                    Date     = $Matches.Date
+                    Time     = $Matches.Time
+                    Message  = $Matches.Message.Replace(':', '')
                     Computer = $Matches.Computer
-                    Address = $Matches.Address
-                    }
-                $Object += $Item |Select-Object -Property Date, Time, Message, Computer, Address
+                    Address  = $Matches.Address
                 }
+                $Object += $Item | Select-Object -Property Date, Time, Message, Computer, Address
             }
         }
-    End
-    {
+    }
+    End {
         Write-Verbose "Returning parse logfile"
         Return $Object
-        }
     }
-Function Set-NetlogonDebugging
-{
+}
+Function Set-NetlogonDebugging {
     <#
         .SYNOPSIS
             This function enables/disables debugging on the netlogon service
@@ -2571,41 +2313,33 @@ Function Set-NetlogonDebugging
     #>
     [CmdletBinding()]
     Param
-         (
-         [switch]$Enable
-         )
-    Begin
-    {
-        }
-    Process
-    {
-        try
-        {
-            if ($Enable)
-            {
+    (
+        [switch]$Enable
+    )
+    Begin {
+    }
+    Process {
+        try {
+            if ($Enable) {
                 Write-Verbose "Running : nltest /dbflag:0x2080ffff"
                 (& nltest /dbflag:0x2080ffff)
                 Restart-Service -Name netlogon -Force
-                }
-            else
-            {
+            }
+            else {
                 Write-Verbose "Running : nltest /dbflag:0x0"
                 (& nltest /dbflag:0x0)
                 Restart-Service -Name netlogon -Force
-                }
             }
-        catch
-        {
+        }
+        catch {
             Write-Error $Error[0]
             break
-            }
-        }
-    End
-    {
         }
     }
-Function Enable-OUProtectedMode
-{
+    End {
+    }
+}
+Function Enable-OUProtectedMode {
     <#
         .SYNOPSIS
             Turn on the protect object from accidental deletion bit
@@ -2618,7 +2352,7 @@ Function Enable-OUProtectedMode
             property page for the OU is checked for, protect this object from accidental deletion.
         .PARAMETER OU
             This is one or more paths in the form of LDAP://OU=Servers,DC=company,DC=com, if LDAP:// is not
-            specified in the path it is added, if it is sent in lowercase it is upper cased so the 
+            specified in the path it is added, if it is sent in lowercase it is upper cased so the
             function will work properly.
         .EXAMPLE
             "LDAP://OU=Servers,DC=company,DC=com","OU=Workstations,DC=company,DC=com" |Enable-OUProtectedMode
@@ -2627,7 +2361,7 @@ Function Enable-OUProtectedMode
             -----------
             This example shows how to pass in multiple OU's on the pipeline.
         .EXAMPLE
-            Get-ADOrganizationalUnit -SearchBase "ou=workstations,dc=copmany,dc=com" -Filter "*" 
+            Get-ADOrganizationalUnit -SearchBase "ou=workstations,dc=copmany,dc=com" -Filter "*"
                 |Select-Object -ExpandProperty DistinguishedName |Enable-OUProtectedMode
 
             Description
@@ -2644,28 +2378,24 @@ Function Enable-OUProtectedMode
     #>
     [CmdletBinding()]
     Param
-        (
-        [Parameter(Mandatory=$true,ValueFromPipeline=$true)]
+    (
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
         [string]$OU
-        )
-    Begin
-    {
+    )
+    Begin {
         $Deny = [System.Security.AccessControl.AccessControlType]::Deny
         $Delete = [System.DirectoryServices.ActiveDirectoryRights]::Delete
         $DeleteTree = [System.DirectoryServices.ActiveDirectoryRights]::DeleteTree
 
         $Everyone = New-Object -TypeName System.Security.Principal.NTAccount -ArgumentList "", "Everyone"
-        }
-    Process
-    {
-        try
-        {
-            if ($OU -notmatch "LDAP://*")
-            {
+    }
+    Process {
+        try {
+            if ($OU -notmatch "LDAP://*") {
                 $OU = "LDAP://$($OU)"
-                }
+            }
             $ldapUrl = $OU.ToString().ToUpper()
-        
+
             $ldapPath = [ADSI]$ldapUrl
             $Security = $ldapPath.psbase.ObjectSecurity
 
@@ -2676,20 +2406,17 @@ Function Enable-OUProtectedMode
             $DeleteTreeRule = New-Object -TypeName System.DirectoryServices.ActiveDirectoryAccessRule -ArgumentList $Everyone, $DeleteTree, $Deny
             $Security.AddAccessRule($DeleteTreeRule)
             $ldapPath.CommitChanges()
-            }
-        catch
-        {
-            $MyError = $Error[0]
-            }
         }
-    End
-    {
-        if ($MyError)
-        {
-            Write-Error $MyError
-            return
-            }
+        catch {
+            $MyError = $Error[0]
         }
     }
+    End {
+        if ($MyError) {
+            Write-Error $MyError
+            return
+        }
+    }
+}
 
 Export-ModuleMember *
