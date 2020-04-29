@@ -319,7 +319,7 @@ Function Get-AdGroupMember {
             $Group = $Item.GetDirectoryEntry()
             $Members = $Group.member
 
-            If ($Members -ne $Null) {
+            If ($Null -ne $Members) {
                 foreach ($User in $Members) {
                     $UserObject = New-Object System.DirectoryServices.DirectoryEntry("LDAP://$($User)")
                     If ($UserObject.objectCategory.Value.Contains("Group")) {
