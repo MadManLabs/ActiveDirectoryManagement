@@ -577,39 +577,7 @@ Function Get-DomainInfo {
     }
 }
 Function Get-ForestInfo {
-    <#
-        .SYNOPSIS
-            Get basic information aobut the current forest.
-        .DESCRIPTION
-            Get basic information about the current forest, or from an external domain
-            that you have rights to by setting TargetDomain to it's FQDN.
-        .PARAMETER TargetDomain
-            The FQDN of the domain to return information from.
-        .EXAMPLE
-            Get-ForestInfo
-
-            Name                  : company.com
-            Sites                 :
-            Domains               : {company.com}
-            GlobalCatalogs        : {dc1.company.com}
-            ApplicationPartitions : {DC=DomainDnsZones,DC=company,DC=com, DC=ForestDnsZones,DC=company,DC=com}
-            ForestMode            : Windows2003Forest
-            RootDomain            : company.com
-            Schema                : CN=Schema,CN=Configuration,DC=company,DC=com
-            SchemaRoleOwner       : dc1.company.com
-            NamingRoleOwner       : dc1.company.com
-
-            Description
-            -----------
-            Show the basic syntax of the command.
-        .NOTES
-            FunctionName : Get-ForestInfo
-            Created by   : jspatton
-            Date Coded   : 03/14/2012 15:56:29
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-ForestInfo
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-ForestInfo.md#get-forestinfo')]
     Param
     (
         [string]$TargetDomain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name

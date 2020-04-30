@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-ForestInfo
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-ForestInfo.md#get-forestinfo
 schema: 2.0.0
 ---
 
@@ -23,9 +23,8 @@ that you have rights to by setting TargetDomain to it's FQDN.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-ForestInfo
-```
 
 Name                  : company.com
 Sites                 :
@@ -37,6 +36,7 @@ RootDomain            : company.com
 Schema                : CN=Schema,CN=Configuration,DC=company,DC=com
 SchemaRoleOwner       : dc1.company.com
 NamingRoleOwner       : dc1.company.com
+```
 
 Description
 -----------
@@ -73,5 +73,5 @@ Date Coded   : 03/14/2012 15:56:29
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-ForestInfo](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-ForestInfo)
+[Get-ForestInfo](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-ForestInfo.md#get-forestinfo)
 
