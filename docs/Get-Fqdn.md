@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-Fqdn
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-Fqdn.md#get-fqdn
 schema: 2.0.0
 ---
 
@@ -23,11 +23,11 @@ FQDN (Fully Qualified Domain Name).
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-Fqdn -DistinguishedName 'DC=Company,DC=com'
-```
 
 Company.com
+```
 
 Description
 -----------
@@ -65,5 +65,5 @@ Date Coded   : 06/29/2012 16:32:23
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-Fqdn](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-Fqdn)
+[Get-Fqdn](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-Fqdn.md#get-fqdn)
 
