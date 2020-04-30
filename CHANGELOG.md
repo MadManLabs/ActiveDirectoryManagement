@@ -8,6 +8,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - function names seem to be mildly random
 - move to external help
 
+## [1.1.0] - 2020-04-30
+### Removed
+- The following functions were removed from the module see [Issue 6](https://github.com/jeffpatton1971/ActiveDirectoryManagement/issues/6)
+  - Add-UserToLocalGroup
+  - Get-LocalGroupMember
+  - Add-DomainGroupToLocalGroup
+  - Set-ComputerName
+
 ## [1.0.0] - 2020-04-30
 ### Changed
 - Credential Parameter issue resolved [Issue 3](https://github.com/jeffpatton1971/ActiveDirectoryManagement/issues/3)
