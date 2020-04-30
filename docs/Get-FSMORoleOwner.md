@@ -23,16 +23,15 @@ Retrieves the list of FSMO role owners of a forest and domain
 
 ### Example 1
 ```powershell
-            Get-FSMORoleOwner
+Get-FSMORoleOwner
 
-            DomainNamingMaster  : dc1.rivendell.com
-            Domain              : rivendell.com
-            RIDOwner            : dc1.rivendell.com
-            Forest              : rivendell.com
-            InfrastructureOwner : dc1.rivendell.com
-            SchemaMaster        : dc1.rivendell.com
-            PDCOwner            : dc1.rivendell.com
-
+DomainNamingMaster  : dc1.rivendell.com
+Domain              : rivendell.com
+RIDOwner            : dc1.rivendell.com
+Forest              : rivendell.com
+InfrastructureOwner : dc1.rivendell.com
+SchemaMaster        : dc1.rivendell.com
+PDCOwner            : dc1.rivendell.com
 ```
 
 Description
