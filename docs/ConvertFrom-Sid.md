@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertFrom-Sid
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertFrom-Sid.md#convertfrom-sid
 schema: 2.0.0
 ---
 
@@ -23,24 +23,24 @@ object that has the Sid as a string.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 ConvertFrom-Sid -ObjectSid $Sid
-```
 
 BinaryLength AccountDomainSid                       Value
 ------------ ----------------                       -----
           28 S-1-5-21-57989841-1078081533-682003330 S-1-5-21-57989841-1078081533-682003330-159172
+```
 
 Description
 -----------
 This is the basic syntax of the command and shows the default output.
 
 ### EXAMPLE 2
-```
+```powershell
 (ConvertFrom-Sid -ObjectSid $Computer.objectSid).Value
-```
 
 S-1-5-21-57989841-1078081533-682003330-159172
+```
 
 Description
 -----------
@@ -49,10 +49,9 @@ This example shows how to display just the Sid as a string.
 ## PARAMETERS
 
 ### -ObjectSid
-This is a Sid object, these are usually stored in a binary form inside
-the object in Active Directory.
-When displayed they typically appear to
-be a column of numbers like this:
+This is a Sid object, these are usually stored in a binary form inside the
+object in Active Directory. When displayed they typically appear to be a column
+of numbers like this:
 
     1
     5
@@ -111,5 +110,5 @@ Date Coded   : 06/26/2012 09:41:02
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertFrom-Sid](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertFrom-Sid)
+[ConvertFrom-Sid](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertFrom-Sid.md#convertfrom-sid)
 

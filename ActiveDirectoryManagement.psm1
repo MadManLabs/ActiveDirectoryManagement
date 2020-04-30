@@ -596,75 +596,7 @@ Function Get-ForestInfo {
     }
 }
 Function ConvertFrom-Sid {
-    <#
-        .SYNOPSIS
-            Convert a Sid byte array to a string
-        .DESCRIPTION
-            This function takes the Sid as a byte array and returns it as an
-            object that has the Sid as a string.
-        .PARAMETER ObjectSid
-            This is a Sid object, these are usually stored in a binary form inside
-            the object in Active Directory. When displayed they typically appear to
-            be a column of numbers like this:
-
-                1
-                5
-                0
-                0
-                0
-                0
-                0
-                5
-                21
-                0
-                0
-                0
-                209
-                218
-                116
-                3
-                253
-                55
-                66
-                64
-                130
-                139
-                166
-                40
-                196
-                109
-                2
-                0
-                0
-            This is converted to an object of type System.Security.Principal.IdentityReference.
-        .EXAMPLE
-            ConvertFrom-Sid -ObjectSid $Sid
-
-            BinaryLength AccountDomainSid                       Value
-            ------------ ----------------                       -----
-                      28 S-1-5-21-57989841-1078081533-682003330 S-1-5-21-57989841-1078081533-682003330-159172
-
-            Description
-            -----------
-            This is the basic syntax of the command and shows the default output.
-
-        .EXAMPLE
-            (ConvertFrom-Sid -ObjectSid $Computer.objectSid).Value
-
-            S-1-5-21-57989841-1078081533-682003330-159172
-
-            Description
-            -----------
-            This example shows how to display just the Sid as a string.
-
-        .NOTES
-            FunctionName : ConvertFrom-Sid
-            Created by   : jspatton
-            Date Coded   : 06/26/2012 09:41:02
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertFrom-Sid
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertFrom-Sid.md#convertfrom-sid')]
     Param
     (
         $ObjectSid
