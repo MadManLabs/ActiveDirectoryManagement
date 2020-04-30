@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertTo-Sid
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertTo-Sid.md#convertto-sid
 schema: 2.0.0
 ---
 
@@ -24,13 +24,13 @@ a byte.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 ConvertTo-Sid -StringSid S-1-5-21-57989841-1078081533-682003330
-```
 
 BinaryLength AccountDomainSid                       Value
 ------------ ----------------                       -----
           28 S-1-5-21-57989841-1078081533-682003330 S-1-5-21-57989841-1078081533-682003330-233119
+```
 
 Description
 -----------
@@ -68,5 +68,5 @@ Date Coded   : 06/26/2012 09:41:06
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertTo-Sid](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertTo-Sid)
+[ConvertTo-Sid](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertTo-Sid.md#convertto-sid)
 

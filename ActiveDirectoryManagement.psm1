@@ -618,35 +618,7 @@ Function ConvertFrom-Sid {
     }
 }
 Function ConvertTo-Sid {
-    <#
-        .SYNOPSIS
-            Convert a string Sid back to a byte array
-        .DESCRIPTION
-            This function takes the Sid as a string and converts it back to a byte array
-            that can be used by other functions which may be looking for the Sid as
-            a byte.
-        .PARAMETER StringSid
-            A string representation of a Sid object, for example:
-
-                S-1-5-21-57989841-1078081533-682003330
-        .EXAMPLE
-            ConvertTo-Sid -StringSid S-1-5-21-57989841-1078081533-682003330
-
-            BinaryLength AccountDomainSid                       Value
-            ------------ ----------------                       -----
-                      28 S-1-5-21-57989841-1078081533-682003330 S-1-5-21-57989841-1078081533-682003330-233119
-
-            Description
-            -----------
-
-        .NOTES
-            FunctionName : ConvertTo-Sid
-            Created by   : jspatton
-            Date Coded   : 06/26/2012 09:41:06
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertTo-Sid
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertTo-Sid.md#convertto-sid')]
     Param
     (
         [string]$StringSid
