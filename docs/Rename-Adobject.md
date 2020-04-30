@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://github.com/jeffpatton1971/mod-posh/wiki/ActiveDirectoryManagement#Rename-Adobject
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Rename-Adobject.md#rename-adobject
 schema: 2.0.0
 ---
 
@@ -25,12 +25,12 @@ in Name parameter.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Rename-Adobject -Adobject $Adobject.Path -Name zomg
-```
 
 distinguishedName : {CN=zomg,OU=testing,DC=company,DC=com}
 Path              : LDAP://cn=zomg,OU=testing,DC=company,DC=com
+```
 
 Description
 -----------
@@ -82,5 +82,5 @@ Date Coded   : 01/06/2015 10:16:39
 
 ## RELATED LINKS
 
-[https://github.com/jeffpatton1971/mod-posh/wiki/ActiveDirectoryManagement#Rename-Adobject](https://github.com/jeffpatton1971/mod-posh/wiki/ActiveDirectoryManagement#Rename-Adobject)
+[Rename-Adobject](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Rename-Adobject.md#rename-adobject)
 
