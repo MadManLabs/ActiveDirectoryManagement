@@ -51,35 +51,7 @@ Function Get-AdObject {
     }
 }
 Function Get-AdGroupMember {
-    <#
-        .SYNOPSIS
-            Return a collection of users in an ActiveDirectory group.
-        .DESCRIPTION
-            This function returns an object that contains all the properties of a user object. This function
-            works for small groups as well as groups in excess of 1000.
-        .PARAMETER UserGroup
-            The name of the group to get membership from.
-        .PARAMETER ADSPath
-            The LDAP URL of the domain that the group resides in.
-        .EXAMPLE
-            Get-AdGroupMember -UserGroup Managers |Format-Table -Property name, distinguishedName, cn
-
-            name                             distinguishedName                cn
-            ----                             -----------------                --
-            {Steve Roberts}                  {CN=Steve Roberts,CN=Users,DC... {Steve Roberts}
-            {S-1-5-21-57989841-1078081533... {CN=S-1-5-21-57989841-1078081... {S-1-5-21-57989841-1078081533...
-            {S-1-5-21-57989841-1078081533... {CN=S-1-5-21-57989841-1078081... {S-1-5-21-57989841-1078081533...
-            {Matt Temple}                    {CN=Matt Temple,CN=Users,DC=c... {Matt Temple}
-            ...
-            Description
-            -----------
-            This example shows passing in a group name, but leaving the default domain name in place.
-        .NOTES
-            The context under which this script is run must have rights to pull infromation from ActiveDirectory.
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdGroupMember
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri='https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-AdGroupMember.md')]
     [OutputType([object[]])]
     Param
     (

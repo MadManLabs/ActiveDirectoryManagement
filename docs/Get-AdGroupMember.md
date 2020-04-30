@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdGroupMember
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-AdGroupMember.md
 schema: 2.0.0
 ---
 
@@ -26,7 +26,6 @@ works for small groups as well as groups in excess of 1000.
 ### EXAMPLE 1
 ```
 Get-AdGroupMember -UserGroup Managers |Format-Table -Property name, distinguishedName, cn
-```
 
 name                             distinguishedName                cn
 ----                             -----------------                --
@@ -41,6 +40,8 @@ name                             distinguishedName                cn
 {Matt Temple}                    {CN=Matt Temple,CN=Users,DC=c...
 {Matt Temple}
 ...
+```
+
 Description
 -----------
 This example shows passing in a group name, but leaving the default domain name in place.
@@ -90,5 +91,5 @@ The context under which this script is run must have rights to pull infromation 
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdGroupMember](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdGroupMember)
+[Get-AdGroupMember](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-AdGroupMember.md)
 
