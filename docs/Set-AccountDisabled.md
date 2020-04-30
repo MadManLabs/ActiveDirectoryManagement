@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AccountDisabled
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AccountDisabled.md#set-accountdisabled
 schema: 2.0.0
 ---
 
@@ -83,11 +83,11 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
-The context under which this function is run needs to have rights to modify the object in
-Active Directory.
+The context under which this function is run needs to have rights to modify the
+object in Active Directory.
 The error I catch is specifically an Access is Denied message.
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AccountDisabled](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AccountDisabled)
+[Set-AccountDisabled](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AccountDisabled.md#set-accountdisabled)
 

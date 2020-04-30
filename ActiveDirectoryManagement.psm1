@@ -161,23 +161,8 @@ Function Get-StaleComputerAccount {
     }
 }
 Function Set-AccountDisabled {
-    <#
-        .SYNOPSIS
-            Disable an account object in Active Directory
-        .DESCRIPTION
-            This function will disable an object in Active Directory, regardless of whether the object
-            is a user or computer.
-        .PARAMETER ADSPath
-            The full LDAP URI of the object to disable.
-        .EXAMPLE
-            Set-AccountDisabled -ADSPath "LDAP://CN=Desktop-01,OU=Workstations,DC=Company,DC=com"
-        .NOTES
-            The context under which this function is run needs to have rights to modify the object in
-            Active Directory. The error I catch is specifically an Access is Denied message.
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AccountDisabled
-    #>
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    [CmdletBinding(HelpURI='https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AccountDisabled.md#set-accountdisabled',
+                   SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
         [Parameter(Mandatory = $true)]
