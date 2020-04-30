@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-StaleComputerAccount
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-StaleComputerAccount.md#get-stalecomputeraccount
 schema: 2.0.0
 ---
 
@@ -17,18 +17,16 @@ Get-StaleComputerAccount [[-ADSPath] <String>] [[-DayOffset] <Int32>] [<CommonPa
 ```
 
 ## DESCRIPTION
-This function can be used to get a list of computer accounts within your Active Directory
-that are older than a certain number of days.
-Typically a computer account will renew it's
-own password every 90 days, so any account where the 'whenChanged' attribute is older than
-90 would be considered old.
+This function can be used to get a list of computer accounts within your Active
+Directory that are older than a certain number of days. Typically a computer
+account will renew it's own password every 90 days, so any account where the
+'whenChanged' attribute is older than 90 would be considered old.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
 ```
 Get-StaleComputerAccount -ADSPath "LDAP://DC=company,DC=com" -DayOffset 90
-```
 
 name                             adspath                          whenchanged
 ----                             -------                          -----------
@@ -40,6 +38,7 @@ name                             adspath                          whenchanged
 {10/25/2010 3:40:32 PM}
 {workstation01}                  {LDAP://CN=workstation01,OU=S...
 {6/2/2010 4:29:08 PM}
+```
 
 Description
 -----------
@@ -85,16 +84,10 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## OUTPUTS
 
 ## NOTES
-90 is a default value, when run in production you should use the number of days that you
-consider an account to be stale.
-The If statement that checks if adsPath contains OU=Servers is specifically for our production
-environment.
-All "servers", regardless of OS, are placed in the Servers OU in their respective
-hierarchy.
-I treat server accounts slightly differently than I do workstations accounts, so I
-wanted a way to differentiate the two.
+90 is a default value, when run in production you should use the number of days
+that you consider an account to be stale.
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-StaleComputerAccount](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-StaleComputerAccount)
+[Get-StaleComputerAccount](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-StaleComputerAccount.md#get-stalecomputeraccount)
 
