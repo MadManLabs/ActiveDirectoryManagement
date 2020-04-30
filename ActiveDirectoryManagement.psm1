@@ -686,23 +686,7 @@ Function Get-Fqdn {
     }
 }
 Function ConvertTo-Rfc1779 {
-    <#
-        .SYNOPSIS
-        .DESCRIPTION
-        .PARAMETER
-        .EXAMPLE
-        .NOTES
-            FunctionName : ConvertTo-Rfc1779
-            Created by   : jspatton
-            Date Coded   : 07/24/2012 16:06:10
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertTo-Rfc1779
-        .LINK
-            http://msdn.microsoft.com/en-us/library/aa706049(v=vs.85)
-        .LINK
-            http://msdn.microsoft.com/en-us/library/aa772267(v=vs.85).aspx
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertTo-Rfc1779.md#convertto-rfc1779')]
     Param
     (
         [Parameter(Mandatory = $true)]

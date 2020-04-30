@@ -1,14 +1,14 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertTo-Accountname
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertTo-Rfc1779.md#convertto-rfc1779
 schema: 2.0.0
 ---
 
 # ConvertTo-Rfc1779
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Convert a name to a DN following RFC1779
 
 ## SYNTAX
 
@@ -17,7 +17,7 @@ ConvertTo-Rfc1779 [-Name] <String> [[-InitType] <Int32>] [[-ConnectionObject] <S
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Convert a name to a DN following RFC1779
 
 ## EXAMPLES
 
@@ -31,7 +31,7 @@ PS C:\> {{ Add example code here }}
 ## PARAMETERS
 
 ### -ConnectionObject
-{{ Fill ConnectionObject Description }}
+adsPath for the Domain
 
 ```yaml
 Type: String
@@ -87,5 +87,14 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ### System.Object
 ## NOTES
-
+    FunctionName : ConvertTo-Rfc1779
+    Created by   : jspatton
+    Date Coded   : 07/24/2012 16:06:10
 ## RELATED LINKS
+[ConvertTo-Rfc1779](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertTo-Rfc1779.md#convertto-rfc1779)
+
+[rfc1779](https://tools.ietf.org/html/rfc1779)
+
+[IADsNameTranslate](https://docs.microsoft.com/en-us/windows/win32/api/iads/nf-iads-iadsnametranslate-init?redirectedfrom=MSDN)
+
+[ADS_NAME_TYPE_ENUM](https://docs.microsoft.com/en-us/windows/win32/api/iads/ne-iads-ads_name_type_enum?redirectedfrom=MSDN)
