@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdObject
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-AdObject.md#get-adobject
 schema: 2.0.0
 ---
 
@@ -30,7 +30,6 @@ specified properties will be provided.
 ### EXAMPLE 1
 ```
 Get-AdObject -ADSPath "LDAP://OU=Workstations,DC=company,DC=com"
-```
 
 Path                                                                  Properties
 ----                                                                  ----------
@@ -38,6 +37,7 @@ LDAP://CN=Computer-pc01,OU=Workstations,DC=company,DC=com             {name, ads
 LDAP://CN=Computer-pc02,OU=Workstations,DC=company,DC=com             {name, adspath}
 LDAP://CN=Computer-pc03,OU=Workstations,DC=company,DC=com             {name, adspath}
 LDAP://CN=Computer-pc04,OU=Workstations,DC=company,DC=com             {name, adspath}
+```
 
 Description
 -----------
@@ -46,10 +46,7 @@ by default.
 
 ### EXAMPLE 2
 ```
-Get-AdObject -ADSPath "LDAP://OU=Workstations,DC=company,DC=com" `
-```
-
--ADProperties "name","distinguishedName"
+Get-AdObject -ADSPath "LDAP://OU=Workstations,DC=company,DC=com" -ADProperties "name","distinguishedName"
 
 Path                                                                  Properties
 ----                                                                  ----------
@@ -57,6 +54,7 @@ LDAP://CN=Computer-pc01,OU=Workstations,DC=company,DC=com             {name, ads
 LDAP://CN=Computer-pc02,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}
 LDAP://CN=Computer-pc03,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}
 LDAP://CN=Computer-pc04,OU=Workstations,DC=company,DC=com             {name, adspath, distinguishedname}
+```
 
 Description
 -----------
@@ -65,10 +63,7 @@ seperated by commas.
 
 ### EXAMPLE 3
 ```
-Get-AdObject -ADSPath "LDAP://OU=Groups,DC=company,DC=com" `
-```
-
--ADProperties "name","distinguishedName" -SearchFilter group
+Get-AdObject -ADSPath "LDAP://OU=Groups,DC=company,DC=com" -ADProperties "name","distinguishedName" -SearchFilter group
 
 Path                                                                  Properties
 ----                                                                  ----------
@@ -76,6 +71,7 @@ LDAP://CN=Group-01,OU=Groups,DC=Company,DC=com                        {name, ads
 LDAP://CN=Group-02,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}
 LDAP://CN=Group-03,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}
 LDAP://CN=Group-04,OU=Groups,DC=Company,DC=com                        {name, adspath, distinguishedname}
+```
 
 Description
 -----------
@@ -103,9 +99,8 @@ Accept wildcard characters: False
 
 ### -SearchFilter
 This parameter is specified in the same format as an LDAP Search Filter.
-For more information on the
-format please visit Microsoft (http://msdn.microsoft.com/en-us/library/aa746475.aspx).
-If nothing is
+For more information on the format please visit Microsoft
+(http://msdn.microsoft.com/en-us/library/aa746475.aspx). If nothing is
 specified on the command-line the default filter is used:
     (objectCategory=computer)
 
@@ -122,8 +117,24 @@ Accept wildcard characters: False
 ```
 
 ### -SearchScope
-{{ Fill SearchScope Description }}
+Specifies the possible scopes for a directory search that is performed using the
+DirectorySearcher object.
 
+Base        0
+Limits the search to the base object. The result contains a maximum of one
+object. When the AttributeScopeQuery property is specified for a search,
+the scope of the search must be set to Base.
+
+OneLevel    1
+Searches the immediate child objects of the base object, excluding the base
+object.
+
+Subtree     2
+Searches the whole subtree, including the base object and all its child objects.
+If the scope of a directory search is not specified, a Subtree type of search is
+performed.
+
+see [Microsoft Docs](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.searchscope?view=dotnet-plat-ext-3.1)
 ```yaml
 Type: String
 Parameter Sets: (All)
@@ -153,8 +164,10 @@ Accept wildcard characters: False
 ```
 
 ### -CacheResults
-{{ Fill CacheResults Description }}
+Gets or sets a value indicating whether the result is cached on the client
+computer.
 
+see [Microsoft Docs]9https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.directorysearcher.cacheresults?view=dotnet-plat-ext-3.1
 ```yaml
 Type: Boolean
 Parameter Sets: (All)
@@ -168,8 +181,10 @@ Accept wildcard characters: False
 ```
 
 ### -Tombstone
-{{ Fill Tombstone Description }}
+Gets or sets a value indicating whether the search should also return deleted
+objects that match the search filter.
 
+see [Microsoft Docs](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.directorysearcher.tombstone?view=dotnet-plat-ext-3.1)
 ```yaml
 Type: Boolean
 Parameter Sets: (All)
@@ -183,7 +198,7 @@ Accept wildcard characters: False
 ```
 
 ### -Credential
-{{ Fill Credential Description }}
+Valid domain credentials
 
 ```yaml
 Type: PSCredential
@@ -198,8 +213,14 @@ Accept wildcard characters: False
 ```
 
 ### -DirSync
-{{ Fill DirSync Description }}
+Gets or sets an object that represents the directory synchronization control to
+use with the search.
 
+The directory synchronization control, commonly referred to as the DirSync
+control, is an LDAP control that is used to search for objects that have changed
+since a previous state.
+
+see [Microsoft Docs](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.directorysearcher.directorysynchronization?view=dotnet-plat-ext-3.1)
 ```yaml
 Type: Object
 Parameter Sets: (All)
@@ -226,5 +247,4 @@ against.
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdObject](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-AdObject)
-
+[Get-AdObject](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-AdObject.md#get-adobject)
