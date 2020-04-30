@@ -779,9 +779,9 @@ Function Set-ComputerName {
             Write-Verbose "Using ComputerName as a switch to determine if we run wmi local or remote"
             try {
                 Write-Verbose "Grab the Win32_ComputerSystem class, this holds the rename method"
-                $ThisComputer = Get-WmiObject -Class Win32_ComputerSystem
+                $ThisComputer = Get-CimInstance -ClassName Win32_ComputerSystem
                 Write-Verbose "Grab the Win32_OperatingSystem class, this holds the reboot method"
-                $RebootComputer = Get-WmiObject -Class Win32_OperatingSystem
+                $RebootComputer = Get-CimInstance -ClassName Win32_OperatingSystem
             }
             catch {
                 Return $Error[0].Exception.InnerException.Message.ToString().Trim()
@@ -789,10 +789,11 @@ Function Set-ComputerName {
         }
         else {
             try {
+                $CimSession = New-CimSession -ComputerName $ComputerName -Credential $Credentials -Authentication CredSsp
                 Write-Verbose "Grab the Win32_ComputerSystem class, this holds the rename method"
-                $ThisComputer = Get-WmiObject -Class Win32_ComputerSystem -ComputerName $ComputerName -Credential $Credentials -Authentication 6
+                $ThisComputer = Get-CimInstance -ClassName  Win32_ComputerSystem -CimSession $CimSession
                 Write-Verbose "Grab the Win32_OperatingSystem class, this holds the reboot method"
-                $RebootComputer = Get-WmiObject -Class Win32_OperatingSystem -ComputerName $ComputerName -Credential $Credentials -Authentication 6
+                $RebootComputer = Get-CimInstance -ClassName Win32_OperatingSystem -CimSession $CimSession
             }
             catch {
                 Return $Error[0].Exception.InnerException.Message.ToString().Trim()
@@ -802,13 +803,20 @@ Function Set-ComputerName {
     Process {
         try {
             if ($PSCmdlet.ShouldProcess()) {
+                $Arguments = @{
+                    Name = $NewName;
+                    Password = $null;
+                    UserName = $null
+                }
                 if ($ComputerName -eq (hostname)) {
                     Write-Verbose "Renaming $($ComputerName) to $($NewName)"
-                    $RetVal = $ThisComputer.Rename($NewName)
+                    $RetVal = Invoke-CimMethod -InputObject $ThisComputer -MethodName Rename -Arguments $Arguments
                 }
                 else {
                     Write-Verbose "Renaming remote $($ComputerName) to $($NewName) requires credentials."
-                    $RetVal = $ThisComputer.Rename($NewName, $Credentials.GetNetworkCredential().Password, $Credentials.UserName)
+                    $Arguments.Password = $Credentials.GetNetworkCredential().Password
+                    $Arguments.UserName = $Credentials.UserName
+                    $RetVal = Invoke-CimMethod -InputObject $ThisComputer -MethodName Rename -Arguments $Arguments -CimSession $CimSession
                 }
             }
         }
@@ -818,7 +826,7 @@ Function Set-ComputerName {
         if ($Reboot -eq $true) {
             try {
                 Write-Verbose "Rebooting $($ComputerName)"
-                $Reboot = $RebotComputer.InvokeMethod("Win32Shutdown", 0)
+                $Reboot = Invoke-CimMethod -InputObject $RebootComputer -MethodName Reboot
             }
             catch {
                 Return $Error[0].Exception.InnerException.Message.ToString().Trim()
