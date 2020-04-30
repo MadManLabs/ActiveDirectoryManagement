@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Reset-ComputerAccount
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Reset-ComputerAccount.md#reset-computeraccount
 schema: 2.0.0
 ---
 
@@ -90,5 +90,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Reset-ComputerAccount](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Reset-ComputerAccount)
-
+[Reset-ComputerAccount](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Reset-ComputerAccount.md#reset-computeraccount)

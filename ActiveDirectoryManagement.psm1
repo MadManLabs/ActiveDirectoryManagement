@@ -162,7 +162,7 @@ Function Get-StaleComputerAccount {
 }
 Function Set-AccountDisabled {
     [CmdletBinding(HelpURI='https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AccountDisabled.md#set-accountdisabled',
-                   SupportsShouldProcess, ConfirmImpact = 'Medium')]
+        SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
         [Parameter(Mandatory = $true)]
@@ -196,25 +196,8 @@ Function Set-AccountDisabled {
     }
 }
 Function Reset-ComputerAccount {
-    <#
-        .SYNOPSIS
-            Reset computer account password
-        .DESCRIPTION
-            This function will reset the computer account password for a single computer
-            or for an OU of computers.
-        .PARAMETER ADSPath
-            The ADSPath of the computer account, or containing OU.
-        .EXAMPLE
-            Reset-ComputerAccount -ADSPath "LDAP://CN=Desktop-PC01,OU=Workstations,DC=company,DC=com"
-
-            Description
-            -----------
-            Example usage showing single computer account reset.
-        .NOTES
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Reset-ComputerAccount
-    #>
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    [CmdletBinding(HelpURI='https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Reset-ComputerAccount.md#reset-computeraccount',
+        SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
         [Parameter(Mandatory = $true)]
