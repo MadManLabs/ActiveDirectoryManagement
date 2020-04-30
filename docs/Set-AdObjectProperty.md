@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AdObjectProperty
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AdObjectProperty.md#set-adobjectproperty
 schema: 2.0.0
 ---
 
@@ -18,15 +18,14 @@ Set-AdObjectProperty [[-ADObject] <Object>] [[-PropertyPairs] <Object>] [-WhatIf
 ```
 
 ## DESCRIPTION
-This function will set the properties of a given object in AD.
-The
-function takes a comma seperated Propertyname, PropertyValue and sets
-the value of that property on the object.
+This function will set the properties of a given object in AD. The function
+takes a comma seperated Propertyname, PropertyValue and sets the value of that
+property on the object.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Set-AdObjectProperty -ADObject 'LDAP://CN=UserAccount,CN=Users,DC=company,DC=com' -PropertyPairs "Description,New User Account"
 ```
 
@@ -52,12 +51,11 @@ Accept wildcard characters: False
 ```
 
 ### -PropertyPairs
-The PropertyName and PropertyValue to be set.
-This can be an array
-of values as such:
+The PropertyName and PropertyValue to be set. This can be an array of values as
+such:
     "Description,UserAccount","Office,Building 1"
-The PropertyName should always be listed first, followed by the
-values of the property.
+The PropertyName should always be listed first, followed by the values of the
+property.
 
 ```yaml
 Type: Object
@@ -116,5 +114,5 @@ Date Coded   : 09/23/2011 14:27:19
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AdObjectProperty](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AdObjectProperty)
+[Set-AdObjectProperty](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AdObjectProperty.md#set-adobjectproperty)
 

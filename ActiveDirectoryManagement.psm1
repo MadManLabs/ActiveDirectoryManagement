@@ -392,35 +392,8 @@ Function Add-UserToGroup {
     }
 }
 Function Set-AdObjectProperty {
-    <#
-        .SYNOPSIS
-            Set the properties of a given object in AD
-        .DESCRIPTION
-            This function will set the properties of a given object in AD. The
-            function takes a comma seperated Propertyname, PropertyValue and sets
-            the value of that property on the object.
-        .PARAMETER ADObject
-            The object within AD to be modified
-        .PARAMETER PropertyPairs
-            The PropertyName and PropertyValue to be set. This can be an array
-            of values as such:
-                "Description,UserAccount","Office,Building 1"
-            The PropertyName should always be listed first, followed by the
-            values of the property.
-        .EXAMPLE
-            Set-AdObjectProperty -ADObject 'LDAP://CN=UserAccount,CN=Users,DC=company,DC=com' -PropertyPairs "Description,New User Account"
-
-            Description
-            -----------
-            This is the basic syntax of this function.
-        .NOTES
-            FunctionName : Set-AdObjectProperty
-            Created by   : Jeff Patton
-            Date Coded   : 09/23/2011 14:27:19
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Set-AdObjectProperty
-    #>
-    [CmdletBinding(SupportsShouldProcess, ConfirmImpact = 'Medium')]
+    [CmdletBinding(HelpURI = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AdObjectProperty.md#set-adobjectproperty',
+        SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
         $ADObject,
