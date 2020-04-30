@@ -1,14 +1,14 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-Fqdn
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-FSMORoleOwner.md#get-fsmoroleowner
 schema: 2.0.0
 ---
 
 # Get-FSMORoleOwner
 
 ## SYNOPSIS
-{{ Fill in the Synopsis }}
+Retrieves the list of FSMO role owners of a forest and domain
 
 ## SYNTAX
 
@@ -17,21 +17,32 @@ Get-FSMORoleOwner [[-TargetDomain] <String>] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-{{ Fill in the Description }}
+Retrieves the list of FSMO role owners of a forest and domain
 
 ## EXAMPLES
 
 ### Example 1
 ```powershell
-PS C:\> {{ Add example code here }}
+            Get-FSMORoleOwner
+
+            DomainNamingMaster  : dc1.rivendell.com
+            Domain              : rivendell.com
+            RIDOwner            : dc1.rivendell.com
+            Forest              : rivendell.com
+            InfrastructureOwner : dc1.rivendell.com
+            SchemaMaster        : dc1.rivendell.com
+            PDCOwner            : dc1.rivendell.com
+
 ```
 
-{{ Add example description here }}
+Description
+-----------
+Retrieves the FSMO role owners each domain in a forest. Also lists the domain and forest.
 
 ## PARAMETERS
 
 ### -TargetDomain
-{{ Fill TargetDomain Description }}
+The FQDN of the domain to query on
 
 ```yaml
 Type: String
@@ -58,3 +69,4 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+[Get-FsmoRoleOwner](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-FSMORoleOwner.md#get-fsmoroleowner)

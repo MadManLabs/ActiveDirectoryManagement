@@ -51,7 +51,7 @@ Function Get-AdObject {
     }
 }
 Function Get-AdGroupMember {
-    [CmdletBinding(HelpUri='https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-AdGroupMember.md')]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-AdGroupMember.md')]
     [OutputType([object[]])]
     Param
     (
@@ -110,7 +110,7 @@ Function Get-AdGroupMember {
     }
 }
 Function Get-StaleComputerAccount {
-    [CmdletBinding(HelpUri='https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-StaleComputerAccount.md#get-stalecomputeraccount')]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-StaleComputerAccount.md#get-stalecomputeraccount')]
     [OutputType([object[]])]
     Param
     (
@@ -161,7 +161,7 @@ Function Get-StaleComputerAccount {
     }
 }
 Function Set-AccountDisabled {
-    [CmdletBinding(HelpURI='https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AccountDisabled.md#set-accountdisabled',
+    [CmdletBinding(HelpURI = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Set-AccountDisabled.md#set-accountdisabled',
         SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
@@ -196,7 +196,7 @@ Function Set-AccountDisabled {
     }
 }
 Function Reset-ComputerAccount {
-    [CmdletBinding(HelpURI='https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Reset-ComputerAccount.md#reset-computeraccount',
+    [CmdletBinding(HelpURI = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Reset-ComputerAccount.md#reset-computeraccount',
         SupportsShouldProcess, ConfirmImpact = 'Medium')]
     Param
     (
@@ -230,35 +230,7 @@ Function Reset-ComputerAccount {
     }
 }
 Function Get-FSMORoleOwner {
-    <#
-        .SYNOPSIS
-            Retrieves the list of FSMO role owners of a forest and domain
-        .DESCRIPTION
-            Retrieves the list of FSMO role owners of a forest and domain
-        .PARMETER TargetDomain
-            The FQDN of the domain to query on
-        .NOTES
-            Name: Get-FSMORoleOwner
-            Author: Boe Prox
-            DateCreated: 06/9/2011
-        .EXAMPLE
-            Get-FSMORoleOwner
-
-            DomainNamingMaster  : dc1.rivendell.com
-            Domain              : rivendell.com
-            RIDOwner            : dc1.rivendell.com
-            Forest              : rivendell.com
-            InfrastructureOwner : dc1.rivendell.com
-            SchemaMaster        : dc1.rivendell.com
-            PDCOwner            : dc1.rivendell.com
-
-            Description
-            -----------
-            Retrieves the FSMO role owners each domain in a forest. Also lists the domain and forest.
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-FSMORoleOwner
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-FSMORoleOwner.md#get-fsmoroleowner')]
     Param
     (
         [string]$TargetDomain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
