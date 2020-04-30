@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: http://scripts.patton-tech.com/wiki/PowerShell/ActiveDirectoryManagement#Get-GPO
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-GPO.md#get-gpo
 schema: 2.0.0
 ---
 
@@ -22,9 +22,8 @@ This function returns a list of all GPO's in the specified domain.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-GPO
-```
 
 DisplayName                 : Default Domain Policy
 Path                        : cn={31B2F340-016D-11D2-945F-00C04FB984F9},cn=policies,cn=system,DC=COMPANY,DC=COM
@@ -37,15 +36,15 @@ ComputerDSVersionNumber     : 255
 UserSysvolVersionNumber     : 33
 ComputerSysvolVersionNumber : 255
 Description                 :
+```
 
 Description
 -----------
 This example shows the basic syntax of the command.
 
 ### EXAMPLE 2
-```
+```powershell
 Get-GPO -Domain COMPANY.NET
-```
 
 DisplayName                 : Default Domain Policy
 Path                        : cn={31B2F340-016D-11D2-945F-00C04FB984F9},cn=policies,cn=system,DC=COMPANY,DC=NET
@@ -58,15 +57,15 @@ ComputerDSVersionNumber     : 255
 UserSysvolVersionNumber     : 33
 ComputerSysvolVersionNumber : 255
 Description                 :
+```
 
 Description
 -----------
 This example shows using the domain parameter to specify an alternate domain.
 
 ### EXAMPLE 3
-```
+```powershell
 Get-GPO -GpoID '31B2F340-016D-11D2-945F-00C04FB984F9'
-```
 
 DisplayName                 : Default Domain Policy
 Path                        : cn={31B2F340-016D-11D2-945F-00C04FB984F9},cn=policies,cn=system,DC=COMPANY,DC=NET
@@ -79,6 +78,7 @@ ComputerDSVersionNumber     : 255
 UserSysvolVersionNumber     : 33
 ComputerSysvolVersionNumber : 255
 Description                 :
+```
 
 Description
 -----------
@@ -132,11 +132,11 @@ You will need the Group Policy Managment console or RSAT installed.
 
 ## RELATED LINKS
 
-[http://scripts.patton-tech.com/wiki/PowerShell/ActiveDirectoryManagement#Get-GPO](http://scripts.patton-tech.com/wiki/PowerShell/ActiveDirectoryManagement#Get-GPO)
+[Get-GPO](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-GPO.md#get-gpo)
 
-[http://blogs.technet.com/b/grouppolicy/archive/2011/06/10/listing-all-gpos-in-the-current-forest.aspx](http://blogs.technet.com/b/grouppolicy/archive/2011/06/10/listing-all-gpos-in-the-current-forest.aspx)
+[Listing GPOs in Forest](http://blogs.technet.com/b/grouppolicy/archive/2011/06/10/listing-all-gpos-in-the-current-forest.aspx)
 
-[http://www.microsoft.com/download/en/search.aspx?q=gpmc](http://www.microsoft.com/download/en/search.aspx?q=gpmc)
+[GPMC](http://www.microsoft.com/download/en/search.aspx?q=gpmc)
 
-[http://www.microsoft.com/download/en/search.aspx?q=remote%20server%20administration%20tools](http://www.microsoft.com/download/en/search.aspx?q=remote%20server%20administration%20tools)
+[RSAT](http://www.microsoft.com/download/en/search.aspx?q=remote%20server%20administration%20tools)
 
