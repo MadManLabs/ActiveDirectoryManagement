@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-DomainInfo
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-DomainInfo.md#get-domaininfo
 schema: 2.0.0
 ---
 
@@ -23,9 +23,8 @@ that you have rights to by setting TargetDomain to it's FQDN.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-DomainInfo
-```
 
 Forest                  : company.com
 DomainControllers       : {dc1.company.com,dc2.company.com}
@@ -36,6 +35,7 @@ PdcRoleOwner            : dc1.company.com
 RidRoleOwner            : dc1.company.com
 InfrastructureRoleOwner : dc1.company.com
 Name                    : company.com
+```
 
 Description
 -----------
@@ -72,5 +72,5 @@ Date Coded   : 03/14/2012 15:56:20
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-DomainInfo](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-DomainInfo)
+[Get-DomainInfo](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-DomainInfo.md#get-domaininfo)
 

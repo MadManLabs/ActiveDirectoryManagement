@@ -558,38 +558,7 @@ Function Get-UnlinkedGPO {
     }
 }
 Function Get-DomainInfo {
-    <#
-        .SYNOPSIS
-            Get basic information about the current domain
-        .DESCRIPTION
-            Get basic information about the current domain, or from an external domain
-            that you have rights to by setting TargetDomain to it's FQDN.
-        .PARAMETER TargetDomain
-            The FQDN of the domain to return information from.
-        .EXAMPLE
-            Get-DomainInfo
-
-            Forest                  : company.com
-            DomainControllers       : {dc1.company.com,dc2.company.com}
-            Children                : {}
-            DomainMode              : Windows2003Domain
-            Parent                  :
-            PdcRoleOwner            : dc1.company.com
-            RidRoleOwner            : dc1.company.com
-            InfrastructureRoleOwner : dc1.company.com
-            Name                    : company.com
-
-            Description
-            -----------
-            Show the basic syntax of the command.
-        .NOTES
-            FunctionName : Get-DomainInfo
-            Created by   : jspatton
-            Date Coded   : 03/14/2012 15:56:20
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-DomainInfo
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-DomainInfo.md#get-domaininfo')]
     Param
     (
         [string]$TargetDomain = [System.DirectoryServices.ActiveDirectory.Domain]::GetCurrentDomain().Name
