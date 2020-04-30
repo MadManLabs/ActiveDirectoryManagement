@@ -640,33 +640,7 @@ Function ConvertTo-Sid {
     }
 }
 Function ConvertTo-Accountname {
-    <#
-        .SYNOPSIS
-            Return the accountname from the SID
-        .DESCRIPTION
-            This function returns the accountname from the underlying SID of an object
-            in Active Directory.
-        .PARAMETER ObjectSid
-            This needs to ne a security principal object
-        .EXAMPLE
-            ConvertTo-Accountname -ObjectSID (ConvertFrom-Sid -ObjectSid $me.objectsid)
-
-            Value
-            -----
-            HOME\jspatton
-
-            Description
-            -----------
-            This example shows how to use the function to convert a security principal object
-            to the underlying account name.
-        .NOTES
-            FunctionName : ConvertTo-Accountname
-            Created by   : jspatton
-            Date Coded   : 06/26/2012 14:24:49
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#ConvertTo-Accountname
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/ConvertTo-Accountname.md#convertto-accountname')]
     Param
     (
         [System.Security.Principal.IdentityReference]$ObjectSid
