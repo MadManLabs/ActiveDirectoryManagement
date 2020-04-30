@@ -359,33 +359,7 @@ Function Get-UserGroupMembership {
     }
 }
 Function Add-UserToGroup {
-    <#
-        .SYNOPSIS
-            Add a domain user to a domain group
-        .DESCRIPTION
-            This function adds a domain user account to a domain group.
-        .PARAMETER GroupDN
-            The distinguishedName of the group to add to
-        .PARAMETER UserDN
-            The distinguishedName of the user account to add
-        .EXAMPLE
-            Add-UserToGroup -GroupDN 'CN=AdminStaff,OU=Groups,DC=company,DC=com' -UserDN 'CN=UserAccount,OU=Employees,DC=company,DC=com'
-
-            GroupDN : LDAP://CN=AdminStaff,OU=Groups,DC=company,DC=com
-            UserDN  : LDAP://CN=UserAccount,OU=Employees,DC=company,DC=com
-            Added   : True
-
-            Description
-            -----------
-            This example shows the syntax of the command.
-        .NOTES
-            FunctionName : Add-UserToGroup
-            Created by   : Jeff Patton
-            Date Coded   : 09/22/2011 14:18:33
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Add-UserToGroup
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Add-UserToGroup.md#add-usertogroup')]
     Param
     (
         $GroupDN,

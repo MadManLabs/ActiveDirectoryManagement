@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Add-UserToGroup
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Add-UserToGroup.md#add-usertogroup
 schema: 2.0.0
 ---
 
@@ -12,7 +12,7 @@ Add a domain user to a domain group
 
 ## SYNTAX
 
-```
+```powershell
 Add-UserToGroup [[-GroupDN] <Object>] [[-UserDN] <Object>] [<CommonParameters>]
 ```
 
@@ -22,13 +22,13 @@ This function adds a domain user account to a domain group.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Add-UserToGroup -GroupDN 'CN=AdminStaff,OU=Groups,DC=company,DC=com' -UserDN 'CN=UserAccount,OU=Employees,DC=company,DC=com'
-```
 
 GroupDN : LDAP://CN=AdminStaff,OU=Groups,DC=company,DC=com
 UserDN  : LDAP://CN=UserAccount,OU=Employees,DC=company,DC=com
 Added   : True
+```
 
 Description
 -----------
@@ -80,5 +80,5 @@ Date Coded   : 09/22/2011 14:18:33
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Add-UserToGroup](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Add-UserToGroup)
+[Add-UserToGroup](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Add-UserToGroup.md#add-usertogroup)
 
