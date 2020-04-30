@@ -364,7 +364,7 @@ Function Get-UserGroupMembership {
         .LINK
             https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-UserGroupMembership
     #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-UserGroupMembership.md#get-usergroupmembership')]
     Param
     (
         [Parameter(Mandatory = $true)]

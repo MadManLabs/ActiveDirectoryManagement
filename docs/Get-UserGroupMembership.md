@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-UserGroupMembership
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-UserGroupMembership.md#get-usergroupmembership
 schema: 2.0.0
 ---
 
@@ -17,35 +17,34 @@ Get-UserGroupMembership [-UserDN] <Object> [<CommonParameters>]
 ```
 
 ## DESCRIPTION
-This function returns a listing of groups that the user is a direct
-member of.
-This is the same list that should appear in the Member Of
-tab in Active Directory Users and Computers.
+This function returns a listing of groups that the user is a direct member of.
+This is the same list that should appear in the Member Of tab in Active
+Directory Users and Computers.
 
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-UserGroupMembership -UserDN "CN=useraccount,OU=employees,DC=company,DC=com"
-```
 
 GroupDN
 -------
 CN=AdminStaff,OU=Groups,DC=company,DC=com
 CN=ServerAdmin,OU=Groups,DC=Company,DC=com
+```
 
 Description
 -----------
 This shows the basic syntax of a user in the local domain.
 
 ### EXAMPLE 2
-```
+```powershell
 Get-UserGroupMembership -UserDN "CN=S-1-5-17,CN=ForeignSecurityPrincipals,DC=company,DC=com"
-```
 
 GroupDN
 -------
 CN=IIS_IUSRS,CN=Builtin,DC=company,DC=com
+```
 
 Description
 -----------
@@ -80,11 +79,11 @@ FunctionName : Get-UserGroupMembership
 Created by   : Jeff Patton
 Date Coded   : 09/22/2011 12:53:23
 
-This script runs in the context of the user and as such the user
-will need to have the requisite permissions to view the group membership
-of a given user object.
+This script runs in the context of the user and as such the user will need to
+have the requisite permissions to view the group membership  of a given user
+object.
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-UserGroupMembership](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-UserGroupMembership)
+[Get-UserGroupMembership](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-UserGroupMembership.md#get-usergroupmembership)
 
