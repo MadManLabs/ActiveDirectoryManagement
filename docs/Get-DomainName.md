@@ -1,7 +1,7 @@
 ---
 external help file: ActiveDirectoryManagement-help.xml
 Module Name: ActiveDirectoryManagement
-online version: https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-DomainName
+online version: https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-DomainName.md#get-domainname
 schema: 2.0.0
 ---
 
@@ -22,12 +22,12 @@ This function returns the FQDN of a domain based on the LDAP Url.
 ## EXAMPLES
 
 ### EXAMPLE 1
-```
+```powershell
 Get-DomainName -LdapUrl 'LDAP://CN=UserAccount,OU=Employees,DC=company,DC=com'
-```
 
 LdapUrl    : LDAP://CN=UserAccount,OU=Employees,DC=company,DC=com
 DomainName : company.com
+```
 
 Description
 -----------
@@ -64,5 +64,5 @@ Date Coded   : 09/22/2011 09:42:38
 
 ## RELATED LINKS
 
-[https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-DomainName](https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-DomainName)
+[Get-DomainName](https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-DomainName.md#get-domainname)
 

@@ -295,30 +295,7 @@ Function Convert-FspToUsername {
     }
 }
 Function Get-DomainName {
-    <#
-        .SYNOPSIS
-            Get the FQDN of the domain from an LDAP Url
-        .DESCRIPTION
-            This function returns the FQDN of a domain based on the LDAP Url.
-        .PARAMETER LdapUrl
-            The LDAP URL for whatever object you need the FQDN for.
-        .EXAMPLE
-            Get-DomainName -LdapUrl 'LDAP://CN=UserAccount,OU=Employees,DC=company,DC=com'
-
-            LdapUrl    : LDAP://CN=UserAccount,OU=Employees,DC=company,DC=com
-            DomainName : company.com
-
-            Description
-            -----------
-            This example shows the basic syntax of the commnand.
-        .NOTES
-            FunctionName : Get-DomainName
-            Created by   : Jeff Patton
-            Date Coded   : 09/22/2011 09:42:38
-        .LINK
-            https://code.google.com/p/mod-posh/wiki/ActiveDirectoryManagement#Get-DomainName
-    #>
-    [CmdletBinding()]
+    [CmdletBinding(HelpUri = 'https://github.com/jeffpatton1971/ActiveDirectoryManagement/blob/1.1.0/docs/Get-DomainName.md#get-domainname')]
     Param
     (
         $LdapUrl
