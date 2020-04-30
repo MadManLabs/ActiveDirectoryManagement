@@ -167,7 +167,7 @@ Accept wildcard characters: False
 Gets or sets a value indicating whether the result is cached on the client
 computer.
 
-see [Microsoft Docs]9https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.directorysearcher.cacheresults?view=dotnet-plat-ext-3.1
+see [Microsoft Docs](https://docs.microsoft.com/en-us/dotnet/api/system.directoryservices.directorysearcher.cacheresults?view=dotnet-plat-ext-3.1)
 ```yaml
 Type: Boolean
 Parameter Sets: (All)
