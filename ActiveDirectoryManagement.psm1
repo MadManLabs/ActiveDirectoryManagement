@@ -771,7 +771,7 @@ Function Set-ComputerName {
     (
         [string]$NewName,
         [string]$ComputerName = (hostname),
-        $Credentials = (Get-Credential),
+        [PSCredential]$Credentials = (Get-Credential),
         [boolean]$Reboot
     )
     Begin {
